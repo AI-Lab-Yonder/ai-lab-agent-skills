@@ -30,7 +30,7 @@ This skill expects a `docs/` folder with:
 - A `decisions/open-questions.md` file tracking unresolved items (can be empty)
 - Documentation files organized by topic (architecture, stories, domain, API, conventions, etc.)
 
-If this structure doesn't exist yet, **stop and tell the user** that the docs folder is a prerequisite. Do not attempt to create it — the user must set it up before running this skill.
+If this structure doesn't exist yet, **stop and tell the user** that a structured docs/ folder is a prerequisite. Recommend running `/docs-scaffold` first to create it from their initial documentation files.
 
 ## How It Works
 
