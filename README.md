@@ -49,7 +49,9 @@ ai-lab-agent-skills/
 │   ├── skill-builder/             # Advanced - Create skills with templates & examples
 │   ├── postmortem/                # Advanced - Capture lessons to gotchas.md
 │   ├── autoresearch/              # Advanced - Auto-optimize skills with evals
-│   └── prune-gotchas/             # Advanced - Consolidate gotchas.md entries
+│   ├── prune-gotchas/             # Advanced - Consolidate gotchas.md entries
+│   ├── docs-scaffold/             # Advanced - Scaffold structured docs/ folder
+│   └── resolve-docs/              # Advanced - Resolve documentation gaps interactively
 └── specs.md                       # Workshop showcase spec (separate)
 ```
 
@@ -70,7 +72,7 @@ ai-lab-agent-skills/
 | `database-designer` | Design schemas, write migrations, model relationships |
 | `auth-system` | Authentication & authorization (signup, login, roles, protected routes) |
 
-### Advanced (11 skills)
+### Advanced (13 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -85,6 +87,8 @@ ai-lab-agent-skills/
 | `postmortem` | Capture lessons learned (bugs, architecture, misunderstandings) into gotchas.md |
 | `autoresearch` | Autonomously optimize skills by running evals and mutating prompts |
 | `prune-gotchas` | Review and consolidate accumulated gotchas.md entries across skills |
+| `docs-scaffold` | Scaffold a structured docs/ folder with templates, splitting rules, and cross-references |
+| `resolve-docs` | Interactively resolve open questions and documentation gaps in project docs |
 
 ## Workshop Usage
 
@@ -93,6 +97,7 @@ ai-lab-agent-skills/
 3. Graduate to advanced skills for deeper workflows
 4. Use `skill-builder` or `skill-creator` to build your own custom skills
 5. Run `pre-merge-review` before merging feature branches
+6. Use `docs-scaffold` + `resolve-docs` for comprehensive project documentation
 
 ## License
 
