@@ -4,11 +4,18 @@ A curated collection of agent skills for AI-powered development workshops. Desig
 
 ## Quick Start
 
-**Claude Code:**
+**Skills** (passive — loaded automatically into context):
 ```bash
-# Install as Claude Code skill
-claude install-skill /path/to/ai-lab-agent-skills
-# Or copy skills/ into your project's .claude/skills/
+# Copy skills/ into your project's .claude/skills/
+cp -r skills/ /path/to/your-project/.claude/skills/
+```
+
+**Commands** (active — invoked explicitly with `/`):
+```bash
+# Copy commands into your personal Claude Code setup
+cp .claude/commands/* ~/.claude/commands/
+# Or into your project for team sharing
+cp .claude/commands/* /path/to/your-project/.claude/commands/
 ```
 
 **Codex:**
@@ -18,16 +25,36 @@ cp -r .codex/ /path/to/your-project/.codex/
 # Skills are referenced from .codex/instructions.md
 ```
 
+## Skills vs Commands
+
+| | Skills | Commands |
+|--|--------|---------|
+| How it activates | Automatically loaded into context | Explicitly invoked with `/command-name` |
+| Best for | Patterns the agent always follows | Workflows you trigger on demand |
+| Format | `skills/<name>/SKILL.md` | `.claude/commands/<name>.md` |
+
 ## Structure
 
 ```
 ai-lab-agent-skills/
 ├── cheatsheet/                  # Quick reference for Claude Code & Codex
-├── .claude/                       # Claude Code config
+├── .claude/
+│   ├── commands/                # Runnable slash commands (copy to use)
+│   │   ├── code-review-codex.md # Codex-powered code review
+│   │   ├── review-loop.md       # Implement → auto-review → address loop
+│   │   ├── cancel-review.md     # Cancel an active review loop
+│   │   └── add-command.md       # Guide for creating new commands
 │   └── settings.json
-├── .codex/                        # Codex config
+├── .codex/                      # Codex config
 │   ├── config.toml
 │   └── instructions.md
+├── commands/                    # Command documentation
+│   ├── code-review-codex/
+│   │   └── COMMAND.md
+│   ├── review-loop/
+│   │   └── COMMAND.md
+│   └── add-command/
+│       └── COMMAND.md
 ├── skills/
 │   ├── frontend-dev/              # Beginner - Build frontend apps
 │   ├── fullstack-dev/             # Beginner - Full-stack development
@@ -74,12 +101,22 @@ ai-lab-agent-skills/
 | `code-reviewer` | Automated code review for security, quality, and performance |
 | `skill-creator` | Generate new reusable skills from git history and patterns |
 
+## Commands Overview
+
+| Command | Description |
+|---------|-------------|
+| `code-review-codex` | Codex-powered review of any commit, branch, or uncommitted changes — you choose what to fix |
+| `review-loop` | Implement a task, get automatic Codex review via Stop hook, address feedback |
+| `cancel-review` | Cancel an active review loop and clean up state |
+| `add-command` | Interactive guide for creating your own slash commands |
+
 ## Workshop Usage
 
 1. Review the [Cheatsheet](cheatsheet/) for essential commands
 2. Start with beginner skills to build something
 3. Graduate to advanced skills for deeper workflows
-4. Use `skill-creator` to build your own custom skills
+4. Use commands for on-demand workflows (`/code-review-codex`, `/review-loop`)
+5. Use `skill-creator` or `add-command` to build your own skills and commands
 
 ## License
 
