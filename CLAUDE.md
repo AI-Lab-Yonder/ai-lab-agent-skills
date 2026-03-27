@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a skill library for AI-powered development workshops. It contains 23 skills (10 beginner, 13 advanced) designed for use with Claude Code and Codex.
+This is a skill library for AI-powered development workshops. It contains 25 skills (10 beginner, 15 advanced) designed for use with Claude Code and Codex.
 
 ## Structure
 
