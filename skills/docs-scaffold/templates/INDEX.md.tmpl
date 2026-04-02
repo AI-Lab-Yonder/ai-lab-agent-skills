@@ -1,0 +1,51 @@
+# {{PROJECT_NAME}} — Documentation Index
+
+This is the entry point for all project documentation. When working on this project, start here to find the relevant context.
+
+## How to Use This Index
+
+- **Starting a story?** Read the relevant story doc + the architecture and conventions it links to.
+- **Need domain context?** Check `domain/` for term definitions.
+- **Unsure about something?** Check `decisions/open-questions.md` — or run `/resolve-docs` to work through unknowns interactively.
+- **Need API details?** Read the distilled API doc first. Only load full specs if needed (ask the user first).
+
+---
+
+## Architecture
+
+System design, data model, and integration patterns.
+
+- [Overview](architecture/overview.md) — {{OVERVIEW_DESCRIPTION}}
+- [Data Model](architecture/data-model.md) — {{DATA_MODEL_DESCRIPTION}}
+- [Cross-Cutting Concerns](architecture/cross-cutting-concerns.md) — {{PATTERNS_DESCRIPTION}}
+
+## Domain
+
+Business terminology and definitions.
+
+- [Glossary](domain/glossary.md) — {{GLOSSARY_DESCRIPTION}}
+
+## Stories
+
+Sprint user stories — one per layer/feature.
+
+{{STORY_LIST}}
+
+## API
+
+External system integration specs.
+
+- [{{API_NAME}}](api/{{API_SLUG}}.md) — Distilled endpoints (read this first)
+- [Full Spec](api/specs/) — Raw spec (~{{SPEC_SIZE}}). **Check size before loading.** If large, ask the user before reading.
+
+## Conventions
+
+Cross-cutting patterns that all layers must follow.
+
+{{CONVENTION_LIST}}
+
+## Decisions
+
+Architectural decisions and unresolved questions.
+
+- [Open Questions](decisions/open-questions.md) — {{OQ_COUNT}} known unknowns
