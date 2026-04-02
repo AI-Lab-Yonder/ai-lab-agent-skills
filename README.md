@@ -51,7 +51,9 @@ ai-lab-agent-skills/
 │   ├── autoresearch/              # Advanced - Auto-optimize skills with evals
 │   ├── prune-gotchas/             # Advanced - Consolidate gotchas.md entries
 │   ├── docs-scaffold/             # Advanced - Scaffold structured docs/ folder
-│   └── resolve-docs/              # Advanced - Resolve documentation gaps interactively
+│   ├── resolve-docs/              # Advanced - Resolve documentation gaps interactively
+│   ├── spa-day/                   # Advanced - Rules & skills health audit
+│   └── adversarial-bug-hunt/      # Advanced - 3-agent adversarial bug discovery
 └── specs.md                       # Workshop showcase spec (separate)
 ```
 
@@ -72,7 +74,7 @@ ai-lab-agent-skills/
 | `database-designer` | Design schemas, write migrations, model relationships |
 | `auth-system` | Authentication & authorization (signup, login, roles, protected routes) |
 
-### Advanced (13 skills)
+### Advanced (15 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -89,6 +91,8 @@ ai-lab-agent-skills/
 | `prune-gotchas` | Review and consolidate accumulated gotchas.md entries across skills |
 | `docs-scaffold` | Scaffold a structured docs/ folder with templates, splitting rules, and cross-references |
 | `resolve-docs` | Interactively resolve open questions and documentation gaps in project docs |
+| `spa-day` | Audit rules and skills for contradictions, redundancy, and staleness |
+| `adversarial-bug-hunt` | 3-agent adversarial pipeline (finder → adversarial → referee) for high-fidelity bug discovery |
 
 ## Workshop Usage
 

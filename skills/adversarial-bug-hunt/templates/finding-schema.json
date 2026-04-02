@@ -1,0 +1,23 @@
+{
+  "id": "BUG-001",
+  "severity": "high|medium|low",
+  "category": "bug|security|performance|logic-error|race-condition|resource-leak|edge-case",
+  "title": "<short title>",
+  "impact": "<user-visible or system impact>",
+  "evidence": [
+    {
+      "file": "<path>",
+      "start_line": 1,
+      "end_line": 1,
+      "snippet": "<code snippet>"
+    }
+  ],
+  "why_it_happens": "<root cause>",
+  "fix_recommendation": "<actionable fix>",
+  "confidence": 0.0,
+  "finder_score": 1,
+  "adversarial_verdict": "DISPROVED|CHALLENGED|CONCEDED",
+  "adversarial_reasoning": "<explanation>",
+  "referee_verdict": "CONFIRMED|DISPROVED|UNCERTAIN",
+  "referee_reasoning": "<explanation>"
+}
