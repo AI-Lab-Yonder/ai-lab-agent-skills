@@ -12,6 +12,10 @@ category: code-quality
 
 Delegates code review of uncommitted changes to Codex MCP, presents a structured report, and helps the user plan fixes. Three phases, executed in order.
 
+> **Note:** An official `codex-review` skill also ships with the Codex CLI plugin.
+> This version uses Codex MCP directly and offers structured JSON output and a
+> fix-planning workflow, which the official one does not.
+
 ## Constraints
 
 - Read `gotchas.md` before starting
