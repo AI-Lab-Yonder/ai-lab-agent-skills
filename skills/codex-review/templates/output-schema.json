@@ -1,0 +1,38 @@
+{
+  "summary": {
+    "scope": "<what was reviewed>",
+    "files_reviewed": 0,
+    "high_severity_count": 0,
+    "medium_severity_count": 0,
+    "low_severity_count": 0
+  },
+  "findings": [
+    {
+      "id": "REV-001",
+      "severity": "high|medium|low",
+      "category": "bug|regression|performance|security|test-gap|completeness-gap",
+      "title": "<short issue title>",
+      "impact": "<user-visible or system impact>",
+      "evidence": [
+        {
+          "file": "<path>",
+          "start_line": 1,
+          "end_line": 1,
+          "snippet": "<short snippet>"
+        }
+      ],
+      "why_it_happens": "<root cause>",
+      "fix_recommendation": "<actionable fix>",
+      "confidence": 0.0
+    }
+  ],
+  "checks_run": [
+    {
+      "name": "typecheck|test|lint|other",
+      "status": "passed|failed|not_run",
+      "details": "<what was run / why not run>"
+    }
+  ],
+  "out_of_scope": [],
+  "overall_confidence": 0.0
+}

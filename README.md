@@ -43,7 +43,13 @@ ai-lab-agent-skills/
 │   ├── multi-agent-orchestrator/  # Advanced - Multi-agent workflows
 │   ├── prompt-engineer/           # Advanced - Optimize AI prompts
 │   ├── code-reviewer/             # Advanced - Security & quality review
-│   └── skill-creator/             # Advanced - Create new skills
+│   ├── skill-creator/             # Advanced - Create new skills
+│   ├── codex-review/              # Advanced - AI code review via Codex MCP
+│   ├── pre-merge-review/          # Advanced - Multi-phase pre-merge pipeline
+│   ├── skill-builder/             # Advanced - Create skills with templates & examples
+│   ├── postmortem/                # Advanced - Capture lessons to gotchas.md
+│   ├── autoresearch/              # Advanced - Auto-optimize skills with evals
+│   └── prune-gotchas/             # Advanced - Consolidate gotchas.md entries
 └── specs.md                       # Workshop showcase spec (separate)
 ```
 
@@ -64,7 +70,7 @@ ai-lab-agent-skills/
 | `database-designer` | Design schemas, write migrations, model relationships |
 | `auth-system` | Authentication & authorization (signup, login, roles, protected routes) |
 
-### Advanced (5 skills)
+### Advanced (11 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -73,13 +79,20 @@ ai-lab-agent-skills/
 | `prompt-engineer` | Craft and optimize prompts for better AI output |
 | `code-reviewer` | Automated code review for security, quality, and performance |
 | `skill-creator` | Generate new reusable skills from git history and patterns |
+| `codex-review` | AI-to-AI code review via Codex MCP with structured JSON report |
+| `pre-merge-review` | Multi-phase pre-merge review pipeline (refactor, code review, Codex, docs) |
+| `skill-builder` | Create well-structured Claude Code skills with templates and examples |
+| `postmortem` | Capture lessons learned (bugs, architecture, misunderstandings) into gotchas.md |
+| `autoresearch` | Autonomously optimize skills by running evals and mutating prompts |
+| `prune-gotchas` | Review and consolidate accumulated gotchas.md entries across skills |
 
 ## Workshop Usage
 
 1. Review the [Cheatsheet](cheatsheet/) for essential commands
 2. Start with beginner skills to build something
 3. Graduate to advanced skills for deeper workflows
-4. Use `skill-creator` to build your own custom skills
+4. Use `skill-builder` or `skill-creator` to build your own custom skills
+5. Run `pre-merge-review` before merging feature branches
 
 ## License
 
