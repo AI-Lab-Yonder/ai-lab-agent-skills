@@ -101,17 +101,18 @@ After the user approves or provides an answer (not on "skip"):
 
 Always tell the user exactly which files were updated and why, so there's a clear audit trail per resolution.
 
-### Step 6: Handle large reference files (e.g., OpenAPI specs)
+### Step 6: Handle reference files (e.g., OpenAPI specs)
 
-Projects often have large reference files such as OpenAPI/Swagger specs, database schemas, or configuration dumps. These are valuable for resolving gaps but dangerous to load fully.
+Projects often have reference files such as OpenAPI/Swagger specs, database schemas, or configuration dumps. These are valuable for resolving gaps but vary widely in size.
 
-If resolving a gap requires information from a large reference file:
+If resolving a gap requires information from a reference file:
 
-1. **Never auto-load it** — large files (especially OpenAPI specs which can be 1-5MB+) will consume significant context and may degrade performance
-2. Tell the user: "I need to check [file name] to answer this. It's approximately [size] — should I load it?"
-3. If the user approves, **load only the relevant section** — search for specific paths, schemas, or keys rather than reading the entire file
-4. **Distill the findings** into the appropriate doc file (e.g., extract relevant endpoints into an API reference doc) so future queries don't need the full reference
-5. Add a note in the distilled doc pointing to the full reference file, with a warning not to auto-load it
+1. **Check the actual file size first.** Not all reference files are large — some OpenAPI specs are under 100KB and perfectly safe to load.
+2. **If the file is small (under ~200KB):** load it directly into context. No need to ask the user or distill — just read it and extract what you need.
+3. **If the file is large (200KB+):** do NOT auto-load it. Tell the user: "I need to check [file name] to answer this. It's approximately [size] — should I load it?"
+4. If the user approves a large file, **load only the relevant section** — search for specific paths, schemas, or keys rather than reading the entire file
+5. **Distill the findings** into the appropriate doc file (e.g., extract relevant endpoints into an API reference doc) so future queries don't need the full reference
+6. Add a note in the distilled doc pointing to the full reference file, with a warning not to auto-load it if it's large
 
 ## Rules
 

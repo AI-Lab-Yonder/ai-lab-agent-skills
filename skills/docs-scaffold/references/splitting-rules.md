@@ -8,12 +8,12 @@ How to distribute source material into the `docs/` folder structure. Read this d
 |---------------|----------------|-------|
 | System diagrams, component descriptions, constraints, deployment | `architecture/overview.md` | Preserve mermaid diagrams verbatim |
 | Entities, schemas, field definitions, status enums, relationships | `architecture/data-model.md` | Include status lifecycle if present |
-| Polling, retry, idempotency, backpressure, threading, config patterns | `architecture/integration-patterns.md` | Cross-cutting technical concerns |
+| Polling, retry, idempotency, backpressure, threading, config patterns | `architecture/cross-cutting-concerns.md` | Cross-cutting technical concerns |
 | Glossary terms, concept definitions, language mappings | `domain/glossary.md` | Create BEFORE other files if multilingual |
 | Domain concepts that need their own page | `domain/[topic].md` | E.g., message types, entity categories |
 | User stories, feature descriptions | `stories/[story-name].md` | One file per story, always |
 | External API endpoints, auth flows, schemas | `api/[api-name].md` | Distilled only — full spec in `api/specs/` |
-| Large reference files (OpenAPI, DB schema) | `api/specs/[filename]` | Never auto-loaded |
+| Large reference files (OpenAPI, DB schema) | `api/specs/[filename]` | Check size first; large files not auto-loaded |
 | Patterns appearing in 2+ stories | `conventions/[pattern-name].md` | Extract before writing story files |
 | Undefined terms, missing decisions, vague sections | `decisions/open-questions.md` | Everything unknown goes here |
 

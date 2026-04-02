@@ -19,7 +19,7 @@ Companion skill to `/resolve-docs` — this skill creates the structure, `/resol
 ## Constraints
 
 - Never invent content — unknowns become entries in `decisions/open-questions.md`, not guesses
-- Never auto-load large reference files — read `references/large-files.md` for the protocol
+- Check reference file sizes before loading — read `references/large-files.md` for the protocol
 - Always confirm understanding AND planned structure before creating any files (two checkpoints)
 - One story per file — never combine stories even if short
 - Use AGENTS.md (not CLAUDE.md) at project root for tool-universality
@@ -45,7 +45,7 @@ Design the `docs/` structure based on source content. Only include folders that 
 
 Present the planned tree to the user and get confirmation before creating files.
 
-See `examples/itris-session.md` for a real-world example of the output structure.
+See `examples/erp-adapter-session.md` for a real-world example of the output structure.
 
 ## Phase 2 — Split and Create Files
 
@@ -77,7 +77,7 @@ Number questions sequentially (OQ-1, OQ-2, ...) grouped by category.
 
 Read `references/large-files.md` for the full protocol. Key points:
 
-- Never auto-load — ask the user with file name and approximate size
+- Check file size first — small files (under ~200KB) can be loaded directly; for large files, ask the user with file name and approximate size
 - Distill only relevant endpoints/schemas into a readable markdown doc
 - Include a mapping table connecting endpoints to stories
 - Store the original in `api/specs/` with clear warnings
