@@ -1,0 +1,35 @@
+name: notify monorepo
+
+# Fires on every push to main that changes a file under skills/.
+# Dispatches the `skills-updated` event to AI-Lab-Yonder/tss-agent-skills,
+# which runs the refresh-catalog workflow and re-emits the SWA catalog.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: notify-monorepo
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: dispatch skills-updated to monorepo
+        env:
+          GH_TOKEN: ${{ secrets.MONOREPO_DISPATCH_TOKEN }}
+          SHA: ${{ github.sha }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "MONOREPO_DISPATCH_TOKEN secret is not set on this repo" >&2
+            exit 1
+          fi
+          gh api repos/AI-Lab-Yonder/tss-agent-skills/dispatches \
+            --method POST \
+            -f event_type=skills-updated \
+            -f client_payload[sha]="$SHA"
