@@ -1,7 +1,9 @@
 ---
 name: spa-day
 description: Audit rules and skills for semantic contradictions, redundancy, and staleness, then interactively resolve with the user. Use periodically when agent performance degrades or after adding many rules/skills.
-version: 1.0.0
+version: 1.0.1
+level: advanced
+category: meta
 ---
 
 # Spa Day

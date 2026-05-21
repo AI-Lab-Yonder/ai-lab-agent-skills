@@ -1,6 +1,7 @@
 ---
 name: docs-generator
 description: "Auto-generate documentation from code. Creates READMEs, API docs, and architecture overviews. Use when: a project lacks documentation, onboarding new team members, or preparing code for open source."
+version: 1.0.0
 level: beginner
 category: documentation
 ---

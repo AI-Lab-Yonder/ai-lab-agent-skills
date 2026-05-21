@@ -1,6 +1,7 @@
 ---
 name: prompt-engineer
 description: "Craft and optimize prompts for better AI output. Improve clarity, structure, and effectiveness of prompts for Claude Code, Codex, and other AI tools. Use when: getting poor results from AI, building reusable prompt templates, or creating skills and agents."
+version: 1.0.0
 level: advanced
 category: ai
 ---

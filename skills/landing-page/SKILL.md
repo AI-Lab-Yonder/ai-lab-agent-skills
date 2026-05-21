@@ -1,6 +1,7 @@
 ---
 name: landing-page
 description: "Create polished, conversion-optimized landing pages quickly. Use when: building marketing pages, product launches, portfolio sites, or any single-page website that needs to look professional fast."
+version: 1.0.0
 level: beginner
 category: frontend
 ---

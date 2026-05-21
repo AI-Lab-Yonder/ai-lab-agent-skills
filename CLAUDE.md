@@ -8,7 +8,7 @@ This is a skill library for AI-powered development workshops. It contains 25 ski
 
 - `skills/` — Each subdirectory contains a `SKILL.md` file
 - `CHEATSHEET.md` — Quick reference for Claude Code & Codex commands
-- Skill format: Markdown with YAML frontmatter (name, description, level, category)
+- Skill format: Markdown with YAML frontmatter (name, description, version, level, category)
 
 ## Skill Levels
 

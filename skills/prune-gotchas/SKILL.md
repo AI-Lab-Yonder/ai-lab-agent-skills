@@ -1,6 +1,7 @@
 ---
 name: prune-gotchas
 description: "Interactive review and consolidation of gotchas.md files across skills. Auto-suggested when any gotchas exceeds 30 entries, or invoke manually anytime. Use when: gotchas files are growing large, entries overlap, or you want to clean up accumulated lessons."
+version: 1.0.0
 level: advanced
 category: meta
 ---

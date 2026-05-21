@@ -1,6 +1,7 @@
 ---
 name: multi-agent-orchestrator
 description: "Coordinate multiple AI agents to tackle complex tasks. Split work across specialized agents, merge results, and maintain quality. Use when: a task is too complex for a single prompt, needs parallel work streams, or requires different expertise at different stages."
+version: 1.0.0
 level: advanced
 category: architecture
 ---

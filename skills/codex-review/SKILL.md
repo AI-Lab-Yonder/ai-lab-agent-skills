@@ -1,6 +1,7 @@
 ---
 name: codex-review
 description: "Review uncommitted git changes for bugs/regressions via Codex MCP and present a structured report. Use when asked to review local changes or find bugs in current work. Requires Codex MCP to be configured."
+version: 1.0.0
 level: advanced
 category: code-quality
 ---

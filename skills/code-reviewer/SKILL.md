@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 description: "Automated code review for security, quality, and performance. Catches bugs, vulnerabilities, and anti-patterns before they ship. Use when: reviewing PRs, auditing code before release, or checking your own work."
+version: 1.0.0
 level: advanced
 category: code-quality
 ---

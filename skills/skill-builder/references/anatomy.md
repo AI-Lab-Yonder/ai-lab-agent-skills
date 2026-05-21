@@ -55,6 +55,8 @@ Use when the skill generates files, runs automation, or handles complex multi-st
 name: kebab-case-name
 description: Action verb + what + trigger condition. Under 200 chars.
 version: 1.0.0
+level: beginner
+category: documentation
 ---
 
 # Skill Name
@@ -87,6 +89,8 @@ Print results and suggest what to do next.
 | `name` | Yes | kebab-case, verb-noun preferred |
 | `description` | Yes | Trigger condition, not summary. Under 200 chars. |
 | `version` | Yes | semver, start at 1.0.0 |
+| `level` | Yes | `beginner` or `advanced` |
+| `category` | Yes | One of `ai`, `architecture`, `backend`, `code-quality`, `database`, `debugging`, `documentation`, `frontend`, `fullstack`, `meta`, `security`, `testing` |
 
 ### Sections
 
