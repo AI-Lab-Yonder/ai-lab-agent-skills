@@ -1,6 +1,7 @@
 ---
 name: database-designer
 description: "Design database schemas, write migrations, and model relationships. Use when: starting a new project that needs a database, adding tables, designing relationships, or optimizing queries."
+version: 1.0.0
 level: beginner
 category: database
 ---

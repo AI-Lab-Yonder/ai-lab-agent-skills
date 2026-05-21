@@ -1,6 +1,7 @@
 ---
 name: refactorer
 description: "Clean up and improve existing code safely. Restructure without changing behavior. Use when: code is messy, duplicated, hard to read, or needs modernization."
+version: 1.0.0
 level: beginner
 category: code-quality
 ---

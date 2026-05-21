@@ -1,6 +1,7 @@
 ---
 name: frontend-dev
 description: "Build modern frontend applications with React, Next.js, and Tailwind CSS. Use when: creating web apps, UI components, landing pages, dashboards, or any browser-based interface."
+version: 1.0.0
 level: beginner
 category: frontend
 ---

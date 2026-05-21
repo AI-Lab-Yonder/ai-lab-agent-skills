@@ -1,7 +1,9 @@
 ---
 name: adversarial-bug-hunt
 description: Discover bugs through a 3-agent adversarial pipeline (finder → adversarial → referee) that exploits sycophancy for high-fidelity results. Use when reviewing code for bugs, especially when single-agent review isn't sufficient.
-version: 1.0.0
+version: 1.0.1
+level: advanced
+category: code-quality
 ---
 
 # Adversarial Bug Hunt

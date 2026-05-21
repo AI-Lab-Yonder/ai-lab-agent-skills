@@ -1,6 +1,7 @@
 ---
 name: skill-builder
 description: "Create well-structured Claude Code skills following Anthropic best practices. Use when building a new skill, improving an existing one, or when the user asks to create automation for a recurring workflow."
+version: 1.0.0
 level: advanced
 category: meta
 ---
@@ -61,7 +62,7 @@ Show the draft description to the user for feedback.
 Read `references/best-practices.md` for content writing guidance. Then:
 
 1. **Write SKILL.md** using `templates/SKILL.md.tmpl` as the starting structure:
-   - Frontmatter (name, description, version)
+   - Frontmatter (name, description, version, level, category)
    - Constraints section (what the skill must NOT do)
    - Phases (the step-by-step workflow — but flexible, not railroading)
    - Reference pointers: tell Claude which files in the skill folder to read and when

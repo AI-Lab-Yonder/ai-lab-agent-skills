@@ -1,0 +1,54 @@
+name: validate skills
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: determine base ref
+        id: base
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            echo "ref=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
+          else
+            echo "ref=$PUSH_BEFORE_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: check whitespace
+        env:
+          BASE_REF: ${{ steps.base.outputs.ref }}
+        run: |
+          if [ -n "$BASE_REF" ] && git cat-file -e "$BASE_REF^{commit}" 2>/dev/null; then
+            git diff --check "$BASE_REF"...HEAD
+          else
+            git diff --check
+          fi
+
+      - name: run validator tests
+        run: ruby scripts/validate-skills_test.rb
+
+      - name: validate skill metadata
+        env:
+          BASE_REF: ${{ steps.base.outputs.ref }}
+        run: |
+          if [ -n "$BASE_REF" ] && git cat-file -e "$BASE_REF^{commit}" 2>/dev/null; then
+            ruby scripts/validate-skills.rb --base "$BASE_REF"
+          else
+            ruby scripts/validate-skills.rb
+          fi
