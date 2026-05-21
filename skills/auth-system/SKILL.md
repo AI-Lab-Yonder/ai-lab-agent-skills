@@ -1,9 +1,6 @@
 ---
 name: auth-system
-description: |
-  Implement authentication and authorization from scratch. Covers signup,
-  login, sessions, JWT, role-based access, and protected routes.
-  Use when: adding auth to a new or existing app.
+description: "Implement authentication and authorization from scratch. Covers signup, login, sessions, JWT, role-based access, and protected routes. Use when: adding auth to a new or existing app."
 level: beginner
 category: security
 ---

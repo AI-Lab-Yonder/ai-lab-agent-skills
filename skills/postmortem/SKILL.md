@@ -1,9 +1,6 @@
 ---
 name: postmortem
-description: |
-  Capture a lesson learned from a bug, architecture mistake, or misunderstanding
-  into the relevant skill's gotchas.md. Use after any correction or failure to
-  build persistent knowledge across sessions.
+description: "Capture a lesson learned from a bug, architecture mistake, or misunderstanding into the relevant skill's gotchas.md. Use after any correction or failure to build persistent knowledge across sessions."
 level: advanced
 category: meta
 ---

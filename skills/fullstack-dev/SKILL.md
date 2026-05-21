@@ -1,9 +1,6 @@
 ---
 name: fullstack-dev
-description: |
-  Complete full-stack development with frontend, backend, database, and deployment.
-  Use when: building apps that need both a UI and a server, APIs with a database,
-  or any project that spans the entire stack.
+description: "Complete full-stack development with frontend, backend, database, and deployment. Use when: building apps that need both a UI and a server, APIs with a database, or any project that spans the entire stack."
 level: beginner
 category: fullstack
 ---

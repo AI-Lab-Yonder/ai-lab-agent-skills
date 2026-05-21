@@ -1,9 +1,6 @@
 ---
 name: skill-builder
-description: |
-  Create well-structured Claude Code skills following Anthropic best practices.
-  Use when building a new skill, improving an existing one, or when the user
-  asks to create automation for a recurring workflow.
+description: "Create well-structured Claude Code skills following Anthropic best practices. Use when building a new skill, improving an existing one, or when the user asks to create automation for a recurring workflow."
 level: advanced
 category: meta
 ---

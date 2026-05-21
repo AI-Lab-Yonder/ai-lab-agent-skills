@@ -1,10 +1,6 @@
 ---
 name: docs-scaffold
-description: |
-  Scaffold a structured docs/ folder from initial markdown files (architecture, stories, API specs).
-  Splits monolithic docs into focused, cross-linked files with an INDEX.md entry point and AGENTS.md
-  at project root. Use when starting a project with raw documentation, onboarding a codebase to
-  AI-assisted development, or restructuring scattered docs for AI-DLC workflows.
+description: "Scaffold a structured docs/ folder from initial markdown files (architecture, stories, API specs). Splits monolithic docs into focused, cross-linked files with an INDEX.md entry point and AGENTS.md at project root. Use when starting a project with raw documentation, onboarding a codebase to AI-assisted development, or restructuring scattered docs for AI-DLC workflows."
 level: advanced
 category: documentation
 version: 1.0.0

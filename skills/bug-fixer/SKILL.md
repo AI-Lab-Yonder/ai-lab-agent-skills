@@ -1,9 +1,6 @@
 ---
 name: bug-fixer
-description: |
-  Systematic approach to finding and fixing bugs in any codebase.
-  Use when: debugging errors, investigating unexpected behavior,
-  fixing failing tests, or resolving production issues.
+description: "Systematic approach to finding and fixing bugs in any codebase. Use when: debugging errors, investigating unexpected behavior, fixing failing tests, or resolving production issues."
 level: beginner
 category: debugging
 ---

@@ -1,9 +1,6 @@
 ---
 name: api-builder
-description: |
-  Design and implement REST APIs with proper routing, validation, error handling,
-  and documentation. Use when: building backend services, microservices, or
-  adding API endpoints to existing applications.
+description: "Design and implement REST APIs with proper routing, validation, error handling, and documentation. Use when: building backend services, microservices, or adding API endpoints to existing applications."
 level: beginner
 category: backend
 ---

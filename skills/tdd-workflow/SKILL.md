@@ -1,9 +1,6 @@
 ---
 name: tdd-workflow
-description: |
-  Full test-driven development cycle: Red-Green-Refactor. Write tests first,
-  then implement, then clean up. Use when: building new features with high
-  confidence, or enforcing disciplined development practices.
+description: "Full test-driven development cycle: Red-Green-Refactor. Write tests first, then implement, then clean up. Use when: building new features with high confidence, or enforcing disciplined development practices."
 level: advanced
 category: testing
 ---

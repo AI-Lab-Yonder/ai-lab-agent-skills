@@ -1,9 +1,6 @@
 ---
 name: pre-merge-review
-description: |
-  Comprehensive pre-merge review pipeline — runs refactor cleanup, code review,
-  Codex review, doc updates, and language-specific review across all branch
-  changes. Use before merging a feature branch.
+description: "Comprehensive pre-merge review pipeline — runs refactor cleanup, code review, Codex review, doc updates, and language-specific review across all branch changes. Use before merging a feature branch."
 level: advanced
 category: code-quality
 ---

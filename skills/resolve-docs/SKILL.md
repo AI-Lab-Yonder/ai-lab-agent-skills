@@ -1,11 +1,6 @@
 ---
 name: resolve-docs
-description: |
-  Interactively resolve open questions and documentation gaps in project docs.
-  Scans all docs for unknowns, proposes resolutions from existing sources, and
-  interviews the user for the rest. Writes answers back into the correct doc files.
-  Use when: onboarding to a project with incomplete docs, preparing docs for AI-DLC,
-  or stress-testing a design by walking through every open question.
+description: "Interactively resolve open questions and documentation gaps in project docs. Scans all docs for unknowns, proposes resolutions from existing sources, and interviews the user for the rest. Writes answers back into the correct doc files. Use when: onboarding to a project with incomplete docs, preparing docs for AI-DLC, or stress-testing a design by walking through every open question."
 level: advanced
 category: documentation
 ---

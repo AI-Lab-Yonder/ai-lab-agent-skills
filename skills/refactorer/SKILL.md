@@ -1,9 +1,6 @@
 ---
 name: refactorer
-description: |
-  Clean up and improve existing code safely. Restructure without changing
-  behavior. Use when: code is messy, duplicated, hard to read, or needs
-  modernization.
+description: "Clean up and improve existing code safely. Restructure without changing behavior. Use when: code is messy, duplicated, hard to read, or needs modernization."
 level: beginner
 category: code-quality
 ---

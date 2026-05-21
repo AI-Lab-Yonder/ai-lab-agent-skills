@@ -1,9 +1,6 @@
 ---
 name: test-writer
-description: |
-  Write comprehensive tests for existing code. Covers unit, integration,
-  and E2E tests. Use when: adding tests to untested code, improving coverage,
-  or ensuring a feature works before shipping.
+description: "Write comprehensive tests for existing code. Covers unit, integration, and E2E tests. Use when: adding tests to untested code, improving coverage, or ensuring a feature works before shipping."
 level: beginner
 category: testing
 ---

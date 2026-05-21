@@ -1,10 +1,6 @@
 ---
 name: skill-creator
-description: |
-  Generate new reusable skills from git history, coding patterns, and team practices.
-  The meta-skill: teaches the AI to create new skills. Use when: you have
-  recurring patterns worth capturing, want to codify team knowledge, or need
-  to create custom workflows for your project.
+description: "Generate new reusable skills from git history, coding patterns, and team practices. The meta-skill: teaches the AI to create new skills. Use when: you have recurring patterns worth capturing, want to codify team knowledge, or need to create custom workflows for your project."
 level: advanced
 category: meta
 ---
@@ -42,9 +38,7 @@ Every skill lives in `skills/<skill-name>/SKILL.md`:
 ```markdown
 ---
 name: skill-name
-description: |
-  One-paragraph description of what this skill does and when to use it.
-  Be specific — this text is used to decide when to activate the skill.
+description: "One-paragraph description of what this skill does and when to use it. Be specific — this text is used to decide when to activate the skill."
 level: beginner | advanced
 category: frontend | backend | testing | etc.
 ---
