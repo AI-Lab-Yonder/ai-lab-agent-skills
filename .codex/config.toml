@@ -1,4 +1,3 @@
 #:schema https://developers.openai.com/codex/config-schema.json
 
-approval_policy = "suggest"
 sandbox_mode = "workspace-write"
