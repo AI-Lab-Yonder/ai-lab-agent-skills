@@ -1,7 +1,7 @@
 ---
 name: feature-gif-recorder
 description: Record a GIF of one specific webapp feature flow with the Playwright CLI, ready to embed in a PR description. Use when shipping/testing a feature that needs a visual demo, changelog GIF, or PR evidence. Auto-trigger before `gh pr create` / `/commit-push-pr` to ask whether to record a demo GIF for the PR body.
-version: 1.0.0
+version: 2.0.0
 level: advanced
 category: testing
 ---
