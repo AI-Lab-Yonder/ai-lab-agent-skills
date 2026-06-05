@@ -53,7 +53,8 @@ ai-lab-agent-skills/
 │   ├── docs-scaffold/             # Advanced - Scaffold structured docs/ folder
 │   ├── resolve-docs/              # Advanced - Resolve documentation gaps interactively
 │   ├── spa-day/                   # Advanced - Rules & skills health audit
-│   └── adversarial-bug-hunt/      # Advanced - 3-agent adversarial bug discovery
+│   ├── adversarial-bug-hunt/      # Advanced - 3-agent adversarial bug discovery
+│   └── feature-gif-recorder/      # Advanced - Record single-feature demo GIF for PR
 └── specs.md                       # Workshop showcase spec (separate)
 ```
 
@@ -74,7 +75,7 @@ ai-lab-agent-skills/
 | `database-designer` | Design schemas, write migrations, model relationships |
 | `auth-system` | Authentication & authorization (signup, login, roles, protected routes) |
 
-### Advanced (15 skills)
+### Advanced (16 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -93,6 +94,7 @@ ai-lab-agent-skills/
 | `resolve-docs` | Interactively resolve open questions and documentation gaps in project docs |
 | `spa-day` | Audit rules and skills for contradictions, redundancy, and staleness |
 | `adversarial-bug-hunt` | 3-agent adversarial pipeline (finder → adversarial → referee) for high-fidelity bug discovery |
+| `feature-gif-recorder` | Record a GIF of one specific feature flow via Playwright CLI; emits a PR-ready SHA-pinned `<img>` snippet |
 
 ## Workshop Usage
 
