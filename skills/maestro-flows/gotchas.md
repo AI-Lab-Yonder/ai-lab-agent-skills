@@ -19,4 +19,3 @@ Entry format: **What goes wrong** / **Why** / **Fix**.
 - **What goes wrong**: The skill burns many runs retrying emulator launches (and improvising launchd/daemon workarounds) when every launch dies right after the startup banner.
 - **Why**: The emulator needs hypervisor access; a sandboxed harness kills it no matter how the command is composed. The log cutting off after the first banner lines with no error is the signature.
 - **Fix**: One launch attempt per the step-4 requirements; if the process is dead ~10s later with a truncated log, stop and ask the user to start the emulator — never retry or invent workarounds. <!-- 2026-07-08T17:10:00 -->
-
