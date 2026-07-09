@@ -1,7 +1,7 @@
 ---
 name: maestro-flows
 description: Create and run Maestro UI test flows for the app in this repo. Use when writing Maestro YAML flows or verifying app behavior on a device/emulator.
-version: 1.4.0
+version: 1.0.0
 level: advanced
 category: testing
 ---
