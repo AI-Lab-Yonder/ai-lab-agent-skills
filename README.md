@@ -54,7 +54,8 @@ ai-lab-agent-skills/
 │   ├── resolve-docs/              # Advanced - Resolve documentation gaps interactively
 │   ├── spa-day/                   # Advanced - Rules & skills health audit
 │   ├── adversarial-bug-hunt/      # Advanced - 3-agent adversarial bug discovery
-│   └── feature-gif-recorder/      # Advanced - Record single-feature demo GIF for PR
+│   ├── feature-gif-recorder/      # Advanced - Record single-feature demo GIF for PR
+│   └── maestro-flows/             # Advanced - Create and run Maestro UI test flows
 └── specs.md                       # Workshop showcase spec (separate)
 ```
 
@@ -75,7 +76,7 @@ ai-lab-agent-skills/
 | `database-designer` | Design schemas, write migrations, model relationships |
 | `auth-system` | Authentication & authorization (signup, login, roles, protected routes) |
 
-### Advanced (16 skills)
+### Advanced (17 skills)
 
 | Skill | Description |
 |-------|-------------|
@@ -95,6 +96,7 @@ ai-lab-agent-skills/
 | `spa-day` | Audit rules and skills for contradictions, redundancy, and staleness |
 | `adversarial-bug-hunt` | 3-agent adversarial pipeline (finder → adversarial → referee) for high-fidelity bug discovery |
 | `feature-gif-recorder` | Record a GIF of one specific feature flow via Playwright CLI; emits a PR-ready SHA-pinned `<img>` snippet |
+| `maestro-flows` | Create and run Maestro UI test flows with project discovery and failure troubleshooting |
 
 ## Workshop Usage
 
