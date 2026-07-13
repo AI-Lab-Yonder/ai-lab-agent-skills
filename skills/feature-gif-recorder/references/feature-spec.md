@@ -1,61 +1,66 @@
 # Feature Spec Format
 
-How to describe **one** feature flow so the skill can drive the Playwright CLI without ambiguity. One invocation = one feature = one GIF.
+Describe one feature flow without embedding credentials or private session data. Markdown, YAML, and JSON are acceptable when they contain the same information.
 
-Two equivalent formats are accepted: a markdown block with key/value lines, or a small YAML/JSON object.
+## Fields
 
-## Markdown variant
+| Field | Required | Meaning |
+|---|---|---|
+| `url` | yes | Approved application URL; credentials must not appear in it |
+| `slug` | yes | Lowercase kebab-case output name |
+| `viewport` | no | Width and height; default `1280x800` |
+| `steps` | yes | Ordered actions and observable waits for one feature |
+| `storage-state-env` | no | Environment-variable name containing a local storage-state path |
+| `mask` | no | Playwright locators to hide in every screenshot |
+| `cadence` | no | Timed sampling for a bounded animation segment |
+| `notes` | no | Non-sensitive capture guidance |
 
-```markdown
-# App URL
-http://localhost:5173
-
-# Feature: Add a todo
-slug: add-todo
-viewport: 1280x800
-steps:
-  - goto /
-  - click  role=button[name="New todo"]
-  - type   role=textbox[name="Title"] "Buy milk"
-  - press  Enter
-  - expect text "Buy milk" visible
-notes: First-load empty state should be captured as frame 000.
-```
-
-## YAML variant
+## Example
 
 ```yaml
 url: http://localhost:5173
-slug: add-todo
-viewport: { w: 1280, h: 800 }
+slug: create-item
+viewport: { width: 1280, height: 800 }
+storage-state-env: FEATURE_GIF_STORAGE_STATE
+mask:
+  - 'testid=account-identifier'
 steps:
-  - { action: goto,   path: / }
-  - { action: click,  selector: 'role=button[name="New todo"]' }
-  - { action: type,   selector: 'role=textbox[name="Title"]', text: "Buy milk" }
-  - { action: press,  key: Enter }
-  - { action: expect, kind: text, value: "Buy milk", state: visible }
+  - { action: goto, path: /items }
+  - { action: click, selector: 'role=button[name="Create item"]' }
+  - { action: type, selector: 'role=textbox[name="Name"]', text: "Example item" }
+  - { action: press, key: Enter }
+  - { action: expect, kind: text, value: "Item created", state: visible }
 ```
 
-If the user points the skill at a file containing multiple feature blocks, the skill must ask which one to record — it does not loop.
+If a file contains several feature blocks, ask which single feature to record.
 
-## Step verbs
+## Step Verbs
 
-| Verb     | Meaning                                                                  |
-|----------|--------------------------------------------------------------------------|
-| `goto`   | Navigate to a path (relative to base URL) or absolute URL.              |
-| `click`  | Click a Playwright accessibility-tree selector (preferred over CSS).    |
-| `type`   | Focus an input + type text.                                              |
-| `press`  | Press a key (`Enter`, `Escape`, `Tab`, `ArrowDown`).                    |
-| `hover`  | Hover an element; useful for menu reveals.                              |
-| `scroll` | Scroll a container or the page (`scroll: down 400`).                    |
-| `wait`   | Sleep N milliseconds. Use sparingly — prefer `expect`.                  |
-| `expect` | Wait for a condition (text visible, role present, URL matches).         |
+| Verb | Meaning |
+|---|---|
+| `goto` | Navigate to a relative path or approved absolute URL |
+| `click` | Click a Playwright locator |
+| `type` | Focus an input and type synthetic text |
+| `press` | Press a key |
+| `hover` | Hover an element |
+| `focus` | Focus an element |
+| `scroll` | Scroll the page or a container |
+| `drag` | Perform a bounded drag interaction |
+| `wait` | Wait a fixed duration only when no observable state exists |
+| `expect` | Wait for text, role, URL, or another observable condition |
 
-## Slug rules
+## Authentication Rules
 
-- Lowercase kebab-case, no spaces.
-- Becomes the folder name and the GIF filename.
+- The field names the environment variable; it never contains the storage-state path or content itself.
+- Generated scripts read the variable at runtime.
+- Raw usernames, passwords, tokens, cookies, and headers are forbidden in the spec.
 
-## Selector preference
+## Mask Rules
 
-Use Playwright accessibility locators (`page.getByRole`, `page.getByText`, `page.getByLabel`) over CSS. They survive markup churn.
+Use the same locator concepts as the flow. Convert each mask entry into a Playwright locator and pass all masks to every screenshot call. If a sensitive region cannot be selected reliably, use safer test data or do not record the flow.
+
+## Slug Rules
+
+- Lowercase kebab-case
+- No path separators or traversal segments
+- Used as the default run-directory and GIF base name

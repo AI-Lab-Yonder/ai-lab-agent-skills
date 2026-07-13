@@ -11,7 +11,7 @@ Each gotcha follows this pattern:
 
 ---
 
-## Playwright MCP Setup
+## Playwright and Browser Setup
 
 _No gotchas yet._
 
@@ -24,5 +24,13 @@ _No gotchas yet._
 _No gotchas yet._
 
 ## Selectors & Waiting
+
+_No gotchas yet._
+
+## Privacy Review
+
+_No gotchas yet._
+
+## Publishing
 
 _No gotchas yet._

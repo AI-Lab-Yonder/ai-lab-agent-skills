@@ -1,12 +1,28 @@
+<!--
+TEMPLATE INSTRUCTIONS — remove this comment and every unused optional field.
+Never place credentials, tokens, cookies, or storage-state content in this file.
+-->
+
 # App URL
 {{APP_URL}}
 
 # Feature: {{FEATURE_TITLE}}
 slug: {{FEATURE_SLUG}}
 viewport: 1280x800
+
+<!-- OPTIONAL: Local storage-state path must come from this environment variable. -->
+storage-state-env: {{STORAGE_STATE_ENV_NAME}}
+
+<!-- OPTIONAL: Repeat for UI regions that must be hidden in every frame. -->
+mask:
+  - {{MASK_SELECTOR}}
+
 steps:
   - goto {{ENTRY_PATH}}
-  - {{STEP_1}}
-  - {{STEP_2}}
+  - {{STEP}}
+
+<!-- OPTIONAL: Add only when the flow has an observable completion condition. -->
   - expect {{ASSERTION}}
+
+<!-- OPTIONAL -->
 notes: {{NOTES}}
