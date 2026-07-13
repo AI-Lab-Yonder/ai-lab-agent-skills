@@ -1,6 +1,6 @@
 # Skill Folder Anatomy
 
-Guide to structuring a Claude Code skill folder. Every skill is a folder, not a single file.
+Guide to structuring an agent skill folder. Every skill is a folder, not a single file.
 
 ---
 
@@ -20,7 +20,7 @@ Use for simple skills that encode a single workflow with few edge cases.
 my-skill/
 ├── SKILL.md
 ├── gotchas.md
-├── references/     # Detailed knowledge Claude reads on-demand
+├── references/     # Detailed knowledge the agent reads on-demand
 │   └── *.md
 └── config.json     # Optional: user-specific setup state
 ```
@@ -99,7 +99,7 @@ Print results and suggest what to do next.
 **Phases**: The skill's workflow broken into logical steps. Each phase should:
 - Have a clear purpose (one concern per phase)
 - Reference sub-files for detailed knowledge
-- Allow Claude flexibility in execution
+- Allow the executing agent flexibility in execution
 - Include user checkpoints where decisions are needed
 
 ---
@@ -122,8 +122,8 @@ Print results and suggest what to do next.
 
 | Location | Scope | Shared via | Use for |
 |----------|-------|-----------|---------|
-| `~/.claude/skills/` | Global (all projects) | Manual copy | Workflow automation, code quality, CI/CD |
-| `.claude/skills/` | Project (one repo) | Git | Codebase-specific scaffolding, internal APIs |
+| Active platform's user-level skill root | Global (all projects) | Platform-supported installation or copy | Workflow automation, code quality, CI/CD |
+| Active platform's repository-level skill root | Project (one repo) | Git | Codebase-specific scaffolding, internal APIs |
 
 **Decision guide**:
 - Is this useful across multiple projects? → Global
@@ -146,4 +146,4 @@ Use `templates/route.py.tmpl` as the starting template for new routes.
 Generate the route handler, service function, and repository method.
 ```
 
-This way, Claude only loads `api-patterns.md` and `route.py.tmpl` when it reaches Phase 2 — not upfront.
+This way, the executing agent only loads `api-patterns.md` and `route.py.tmpl` when it reaches Phase 2 — not upfront.

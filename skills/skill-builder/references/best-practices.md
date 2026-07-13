@@ -1,12 +1,12 @@
-# Best Practices for Claude Code Skills
+# Best Practices for Agent Skills
 
-Distilled from Anthropic's official skill-building guidance and real-world experience.
+Cross-platform skill-building guidance distilled from practical experience.
 
 ---
 
 ## Writing the Description
 
-The description is a **trigger condition** for the model, not a human summary. It determines when Claude activates the skill.
+The description is a **trigger condition** for the model, not a human summary. It determines when an agent activates the skill.
 
 **Format**: `[Action verb] [what]. Use when [specific scenario].`
 
@@ -31,16 +31,16 @@ The description is a **trigger condition** for the model, not a human summary. I
 
 ## Don't State the Obvious
 
-Claude already knows standard coding patterns, popular libraries, and common CLI tools. A skill that restates this knowledge adds noise without value.
+A capable agent already knows standard coding patterns, popular libraries, and common CLI tools. A skill that restates this knowledge adds noise without value.
 
 **Focus the skill on**:
 - Your organization's specific patterns and conventions
-- Internal tools and APIs Claude can't know about
+- Internal tools and APIs the agent can't know about
 - Non-obvious gotchas and edge cases
 - Decisions that deviate from library/framework defaults
 - Domain knowledge specific to your business
 
-**Test**: If Claude would do it correctly without the skill, that section adds no value. Remove it.
+**Test**: If a capable agent would do it correctly without the skill, that section adds no value. Remove it.
 
 ---
 
@@ -73,10 +73,10 @@ Not all information should be in SKILL.md. Structure knowledge by when it's need
 | `SKILL.md` | Overview, constraints, phase structure, pointers to sub-files | Always (on skill activation) |
 | `references/` | Detailed domain knowledge, API docs, architecture guides | On-demand ("Read `references/X.md` for details") |
 | `templates/` | File templates, starter code | During generation phases |
-| `examples/` | Concrete reference implementations | When Claude needs patterns to follow |
+| `examples/` | Concrete reference implementations | When the agent needs patterns to follow |
 | `scripts/` | Executable helpers | During execution phases |
 
-**Key principle**: SKILL.md tells Claude **what files exist** and **when to read them**. It does not contain their full contents.
+**Key principle**: SKILL.md tells the executing agent **what files exist** and **when to read them**. It does not contain their full contents.
 
 **Anti-pattern**: Dumping everything into SKILL.md. This bloats initial context and wastes tokens on information that may not be needed for every execution.
 
@@ -84,7 +84,7 @@ Not all information should be in SKILL.md. Structure knowledge by when it's need
 
 ## Avoid Railroading
 
-Give Claude information and context, not rigid step-by-step scripts.
+Give the executing agent information and context, not rigid step-by-step scripts.
 
 **Bad** (railroading):
 ```
@@ -100,7 +100,7 @@ The build system uses npm. Common error patterns include type errors
 tsconfig.json). Prioritize type errors as they block other fixes.
 ```
 
-Claude can adapt to the specific situation when given context rather than commands.
+The agent can adapt to the specific situation when given context rather than commands.
 
 ---
 
@@ -108,11 +108,11 @@ Claude can adapt to the specific situation when given context rather than comman
 
 If the skill needs user-specific configuration:
 
-1. **First run**: Detect missing `config.json`, ask user via AskUserQuestion
+1. **First run**: Detect missing `config.json`, then ask the user through the available structured question mechanism or normal conversation
 2. **Subsequent runs**: Read config silently, proceed with execution
 3. **Store in**: `config.json` in the skill directory
 
-For structured questions, use AskUserQuestion with predefined options when possible.
+For structured questions, use the platform's available question interface with predefined options when possible.
 
 **What to configure**: Slack channels, API endpoints, default branches, team names, output preferences.
 **What NOT to configure**: Things derivable from the project (language, framework, file structure).
@@ -133,14 +133,14 @@ Note: Data stored in the skill directory may be deleted on skill upgrade. For du
 
 ## Scripts & Code
 
-Include scripts/libraries that let Claude compose rather than reconstruct:
+Include scripts/libraries that let the agent compose rather than reconstruct:
 
 - Python helpers for common operations
 - Shell scripts for multi-step workflows
 - SQL templates for query patterns
 - Assertion libraries for verification skills
 
-Claude can generate code on-the-fly that imports or calls your scripts, saving time and reducing errors.
+The agent can generate code on-the-fly that imports or calls your scripts, saving time and reducing errors.
 
 ---
 
@@ -148,8 +148,8 @@ Claude can generate code on-the-fly that imports or calls your scripts, saving t
 
 Skills can define hooks active only during skill execution:
 
-- **PreToolUse**: Block dangerous commands (e.g., prevent `rm -rf` during a careful refactor)
-- **PostToolUse**: React to outputs (auto-format, validate, run checks)
+- **Pre-action hooks**: Block dangerous commands before supported actions run
+- **Post-action hooks**: React to outputs by formatting, validating, or running checks
 
 **Only add hooks when genuinely useful**. Always-on hooks that trigger on every tool call are annoying and slow. Reserve hooks for safety-critical operations.
 
@@ -157,7 +157,7 @@ Skills can define hooks active only during skill execution:
 
 ## Composition
 
-Skills can reference other skills by name. Claude will invoke them if installed.
+Skills can reference other skills by name. The agent can invoke them when they are installed and the platform supports skill composition.
 
 **Design for composability**:
 - Keep skills focused on one concern
@@ -172,7 +172,7 @@ Skills can reference other skills by name. Claude will invoke them if installed.
 Before considering a skill complete:
 
 - [ ] Description is a trigger condition, not a summary
-- [ ] SKILL.md doesn't state what Claude already knows
+- [ ] SKILL.md doesn't state what a capable agent already knows
 - [ ] Gotchas section exists with empty sections ready for real failures
 - [ ] Progressive disclosure: detailed info in sub-files, not all in SKILL.md
 - [ ] Flexible instructions: gives info + room to adapt, not rigid commands
