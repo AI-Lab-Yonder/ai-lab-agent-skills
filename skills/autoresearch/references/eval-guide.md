@@ -88,15 +88,44 @@ If eval 1 is "Is the text grammatically correct?" and eval 4 is "Are there any s
 
 **Fix:** Translate subjective qualities into observable signals. "Engaging" might mean: "Does the first sentence contain a specific claim, story, or question (not a generic statement)?"
 
+### 5. Tuning on every scenario
+If every scenario is used to choose mutations, a skill can improve the experiment score without improving on new inputs.
+
+**Fix:** Separate development scenarios from holdout scenarios. Use development failures during the mutation loop, and evaluate holdouts only at baseline and final comparison.
+
+### 6. Scoring without evidence
+A pass/fail label cannot be audited when the evaluator does not record what it observed.
+
+**Fix:** Store evidence for every decision: command output, artifact path, concise excerpt, or a specific observable property. Keep sensitive evidence local and redact it from shareable summaries.
+
+### 7. Changing the evaluator mid-run
+Changing a criterion, model, configuration, or interpretation after baseline makes scores incomparable.
+
+**Fix:** Freeze the eval definitions and evaluator configuration in the run configuration. If they must change, start a new baseline.
+
 ---
 
-## writing your evals: the 3-question test
+## evaluator reliability
+
+- Prefer executable checks for runtime behavior, file validity, schemas, and measurable constraints.
+- For judgment-based checks, prefer an evaluator context that does not know which output is the candidate.
+- Use the same evaluator configuration for baseline and candidates.
+- Record a reason and evidence for both passes and failures.
+- If two reasonable evaluators would often disagree, rewrite the criterion before running experiments.
+
+When sensitive or proprietary material is involved, use anonymized fixtures where possible. Do not copy credentials, personal data, private hostnames, organization names, or confidential identifiers into reusable eval definitions or public dashboards.
+
+---
+
+## writing your evals: the 5-question test
 
 Before finalizing an eval, ask:
 
 1. **Could two different agents score the same output and agree?** If not, the eval is too subjective. Rewrite it.
 2. **Could a skill game this eval without actually improving?** If yes, the eval is too narrow. Broaden it.
 3. **Does this eval test something the user actually cares about?** If not, drop it. Every eval that doesn't matter dilutes the signal from evals that do.
+4. **Can the evaluator record concrete evidence for its decision?** If not, make the condition more observable.
+5. **Can the eval be reused without exposing private information?** If not, anonymize the fixture or keep it in an explicitly restricted run configuration.
 
 ---
 
@@ -109,6 +138,7 @@ EVAL [N]: [Short name]
 Question: [Yes/no question]
 Pass: [What "yes" looks like — one sentence, specific]
 Fail: [What triggers "no" — one sentence, specific]
+Evidence: [What command output, artifact, excerpt, or observation to record]
 ```
 
 Example:
@@ -118,4 +148,5 @@ EVAL 1: Text legibility
 Question: Is all text in the output fully legible with no truncated, overlapping, or cut-off words?
 Pass: Every word is complete and readable without squinting or guessing
 Fail: Any word is partially hidden, overlapping another element, or cut off at the edge
+Evidence: Path to the rendered artifact and the evaluator's observation for any affected text
 ```
