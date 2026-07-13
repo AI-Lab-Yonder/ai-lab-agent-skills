@@ -5,7 +5,7 @@ Demonstrates the `security` category with high-confidence findings requiring imm
 ```json
 {
   "summary": {
-    "scope": "Uncommitted changes in server/",
+    "scope": "Uncommitted changes in src/server/",
     "files_reviewed": 4,
     "high_severity_count": 2,
     "medium_severity_count": 1,
@@ -20,7 +20,7 @@ Demonstrates the `security` category with high-confidence findings requiring imm
       "impact": "Attacker-controlled input can execute arbitrary SQL via the search endpoint.",
       "evidence": [
         {
-          "file": "server/src/routes/search.ts",
+          "file": "src/server/routes/search.ts",
           "start_line": 34,
           "end_line": 36,
           "snippet": "const query = `SELECT * FROM items WHERE name LIKE '%${req.query.q}%'`"
@@ -38,14 +38,14 @@ Demonstrates the `security` category with high-confidence findings requiring imm
       "impact": "Secret exposed in version control; anyone with repo access can use the key.",
       "evidence": [
         {
-          "file": "server/src/services/payment.ts",
+          "file": "src/server/services/external-service.ts",
           "start_line": 5,
           "end_line": 5,
-          "snippet": "const STRIPE_KEY = 'sk_live_abc123...'"
+          "snippet": "const serviceCredential = '[redacted hardcoded value]'"
         }
       ],
       "why_it_happens": "Developer added key directly instead of reading from environment variable.",
-      "fix_recommendation": "Move to environment variable: process.env.STRIPE_SECRET_KEY. Add .env to .gitignore.",
+      "fix_recommendation": "Load the credential from a protected environment or secret store and keep local secret files out of version control.",
       "confidence": 1.0
     },
     {
@@ -56,7 +56,7 @@ Demonstrates the `security` category with high-confidence findings requiring imm
       "impact": "Brute-force attacks against login are not throttled.",
       "evidence": [
         {
-          "file": "server/src/routes/auth.ts",
+          "file": "src/server/routes/auth.ts",
           "start_line": 12,
           "end_line": 30,
           "snippet": "router.post('/login', async (req, res) => { ... }) // no rate limiter middleware"
@@ -76,7 +76,7 @@ Demonstrates the `security` category with high-confidence findings requiring imm
     {
       "name": "lint",
       "status": "failed",
-      "details": "eslint reported 1 warning: no-hardcoded-credentials on payment.ts:5"
+      "details": "eslint reported 1 warning: no-hardcoded-credentials in external-service.ts"
     },
     {
       "name": "test",

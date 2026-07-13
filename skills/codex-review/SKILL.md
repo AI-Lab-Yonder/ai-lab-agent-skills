@@ -1,7 +1,7 @@
 ---
 name: codex-review
 description: "Review uncommitted git changes for bugs/regressions via Codex MCP and present a structured report. Use when asked to review local changes or find bugs in current work. Requires Codex MCP to be configured."
-version: 1.0.0
+version: 1.0.1
 level: advanced
 category: code-quality
 ---
@@ -10,17 +10,14 @@ category: code-quality
 
 Delegates code review of uncommitted changes to Codex MCP, presents a structured report, and helps the user plan fixes. Three phases, executed in order.
 
-> **Note:** An official `codex-review` skill also ships with the Codex CLI plugin.
-> This version uses Codex MCP directly and offers structured JSON output and a
-> fix-planning workflow, which the official one does not.
-
 ## Constraints
 
 - Read `gotchas.md` before starting
-- Do NOT run git commands yourself (no `git status`, `git diff`, etc.)
-- Do NOT read source files to perform your own review
+- Do NOT run git commands or read source files to perform a second code review
+- After Codex responds, read-only git and file inspection is allowed solely to verify its cited paths, line ranges, and snippets
 - Do NOT guess at issues without Codex data
-- Your ONLY job is: send the prompt to Codex, present results, and ask the user what to fix
+- Do NOT install dependencies, edit files, or approve expanded permissions during review
+- Your job is to send the prompt to Codex, validate and present its results, and ask the user what to fix
 
 ---
 
@@ -33,10 +30,12 @@ Call `mcp__codex__codex` exactly once with these parameters:
 | Parameter         | Value            |
 |-------------------|------------------|
 | `sandbox`         | `"read-only"`    |
-| `approval-policy` | `"on-failure"`   |
+| `approval-policy` | `"never"`        |
 | `prompt`          | From `references/codex-prompt.md`, with `{{SCOPE_CLAUSE}}` replaced |
 
-See `references/json-schema.md` for the output schema field reference and validation rules. The raw schema template is at `templates/output-schema.json`.
+See `references/json-schema.md` for the output contract and validation rules. The raw report template is at `templates/output-schema.json`.
+
+If the MCP call fails, times out, or is unavailable, report the exact failure and stop. Do not fabricate findings or silently substitute a different review method.
 
 ---
 
@@ -44,7 +43,15 @@ See `references/json-schema.md` for the output schema field reference and valida
 
 Read `references/presentation-format.md` for the display format. See `examples/` for concrete output samples.
 
-If `findings` is empty: say "No issues found in the uncommitted changes." and **stop** — do not proceed to Phase 3.
+Before presenting findings:
+
+1. Parse exactly one JSON object. A single outer markdown fence may be removed; do not guess when the response is truncated, ambiguous, or contains multiple objects.
+2. Validate required fields, types, allowed values, confidence ranges, sequential IDs, and severity counts using `references/json-schema.md`.
+3. Verify every cited path, line range, and snippet read-only against the reviewed diff. For deleted or renamed code, verify against the diff preimage rather than only the current file.
+4. If the report contract is invalid, show the validation errors and stop. Do not silently rewrite substantive findings.
+5. If a finding's evidence cannot be verified, retain the finding but label it `UNVERIFIED EVIDENCE` in the presentation.
+
+If `findings` is empty: say "No issues found in the reviewed scope." Show any skipped files, `out_of_scope` entries, or checks that were not run, then **stop** — do not proceed to Phase 3.
 
 ---
 

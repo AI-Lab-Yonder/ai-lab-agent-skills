@@ -1,6 +1,6 @@
-# Output JSON Schema
+# Output Contract
 
-The Codex review produces a JSON report with three top-level sections. See `templates/output-schema.json` for the raw schema template.
+The Codex review produces a JSON report with the fields below. See `templates/output-schema.json` for the raw report template.
 
 ## Field Reference
 
@@ -52,6 +52,13 @@ Number 0.0-1.0 representing aggregate confidence across all findings.
 
 - Every finding MUST include all fields — no optional fields
 - Every evidence item MUST include file, start_line, end_line, snippet
+- Finding IDs must be unique and sequential: `REV-001`, `REV-002`, ...
+- `start_line` must be at least 1 and `end_line` must be greater than or equal to `start_line`
+- Severity counts must exactly match the corresponding values in `findings[]`
+- `confidence` and `overall_confidence` must be between 0.0 and 1.0 inclusive
+- Evidence paths must belong to the reviewed scope
+- Credential or secret values in snippets must be redacted
+- Every skipped file or excluded area must appear in `out_of_scope` with a reason
 - Use empty arrays `[]` for no items (never null)
 - All numeric fields must be numbers (not strings)
 - If no issues found: `findings=[]`, all severity counts zeroed
