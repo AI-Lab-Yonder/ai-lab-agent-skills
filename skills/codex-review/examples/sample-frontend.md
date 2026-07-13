@@ -5,7 +5,7 @@ Typical review of uncommitted frontend changes. Demonstrates `regression` and `t
 ```json
 {
   "summary": {
-    "scope": "Uncommitted frontend changes under apps/web",
+    "scope": "Uncommitted frontend changes under src/ui",
     "files_reviewed": 6,
     "high_severity_count": 1,
     "medium_severity_count": 1,
@@ -16,11 +16,11 @@ Typical review of uncommitted frontend changes. Demonstrates `regression` and `t
       "id": "REV-001",
       "severity": "high",
       "category": "regression",
-      "title": "Query cache key misses pagination inputs",
-      "impact": "Users can see stale page data when changing offset/limit.",
+      "title": "List cache key misses pagination inputs",
+      "impact": "Users can see stale list data when changing offset or limit.",
       "evidence": [
         {
-          "file": "apps/web/src/hooks/use-approval-inbox.ts",
+          "file": "src/ui/hooks/use-items.ts",
           "start_line": 58,
           "end_line": 67,
           "snippet": "queryKey omits limit/offset while request uses them"
@@ -38,7 +38,7 @@ Typical review of uncommitted frontend changes. Demonstrates `regression` and `t
       "impact": "Refactor regressions may ship undetected.",
       "evidence": [
         {
-          "file": "apps/web/src/hooks/use-reports.ts",
+          "file": "src/ui/hooks/use-item-list.ts",
           "start_line": 1,
           "end_line": 80,
           "snippet": "hook migrated to query layer; no dedicated hook test found"
@@ -53,7 +53,7 @@ Typical review of uncommitted frontend changes. Demonstrates `regression` and `t
     {
       "name": "typecheck",
       "status": "passed",
-      "details": "npm run typecheck (apps/web)"
+      "details": "npm run typecheck"
     },
     {
       "name": "test",

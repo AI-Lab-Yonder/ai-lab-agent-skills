@@ -1,42 +1,47 @@
 # Recording Strategy
 
-When to snap a frame, how many, how fast.
+Choose frames that explain the feature without capturing noise or sensitive information.
 
-## Default cadence: state-change driven
+## Default Cadence: State Changes
 
-Snap once after **every user-visible change**:
+Capture once after each planned user-visible state:
 
-- After `goto` once the page is loaded.
-- After every `click` / `press` / `type` once the next state is visible (use `browser_wait_for` on the new text/role rather than a fixed sleep).
-- After every `expect` that succeeds.
+- After navigation reaches a stable initial state
+- After an action and the resulting locator, URL, or load state confirms the next state
+- After a deliberate hover, focus, drag, or scroll state that matters to the demonstration
+- After the final completion condition
 
-This usually produces 5–15 frames per feature — small GIFs, sharp transitions.
+Use Playwright Node APIs such as `locator.waitFor`, `page.waitForURL`, `locator.hover`, `locator.focus`, and `page.setViewportSize`. Do not reference browser-control tools from another runtime.
 
-## Animation-heavy flows: timed sampling
+## Animation-Heavy Segments
 
-If the feature includes a CSS transition, drag, or canvas animation that's the whole point of the demo, switch to timed sampling for that segment:
+For a transition, drag, canvas animation, or other motion that is itself the feature:
 
-- Trigger the animation.
-- Snap every 100–250 ms for the animation duration.
-- Resume state-change cadence after.
+1. Trigger the animation.
+2. Capture at a confirmed interval, usually 100-250 ms, for a bounded duration.
+3. Resume state-change capture afterward.
 
-Mark this in the spec with a `cadence: timed 200ms for 2000ms` directive on the step that triggers it.
+Record the interval and duration in the spec. Keep the whole GIF near ten seconds unless the user requests otherwise.
 
-## Hover & focus
+## Hover and Focus
 
-Browsers don't show hover/focus states in screenshots taken during navigation. To capture them: `browser_hover` (or `browser_focus`) → `browser_wait_for time=200ms` → snap frame.
+Use `await locator.hover()` or `await locator.focus()`, wait for the observable visual state, then capture. A short fixed delay is acceptable only when the state has no better observable signal.
 
-## Don't capture noise
+## Stable Initial State
 
-Skip frames during:
-- Page initial paint (snap once `load` fires, not before).
-- Font swap flashes — wait `document.fonts.ready` if a custom font is in use.
-- Toast notifications you don't want in the demo — close them before snapping the next state.
+- Wait for the relevant content, not just initial paint.
+- Wait for `document.fonts.ready` when font swapping affects the capture.
+- Close unrelated notifications before the first frame.
+- Set viewport and device scale factor before navigation; do not resize mid-flow.
 
-## Consistent pixel ratio
+## Privacy by Construction
 
-Always set `browser_resize` before navigation. Resizing mid-flow re-layouts and breaks the sequence. If both desktop and mobile flows are needed, run two separate features with different slugs.
+- Use synthetic test records.
+- Define masking locators before capture and apply them to every frame.
+- Avoid browser chrome, unrelated tabs, notification centers, and developer tools.
+- Do not include URL query strings or fragments in metadata.
+- Re-record rather than editing around accidentally captured sensitive data.
 
-## Keep the flow under ~10 seconds of GIF
+## Frame Budget
 
-A 4 fps GIF with 30 frames is ~7.5 seconds — readers' attention span. If a flow needs more, split it into sub-features (`checkout-step-1`, `checkout-step-2`).
+State-driven flows usually need 5-15 frames. If a flow approaches hundreds of frames, reduce timed sampling or narrow the feature. Desktop and mobile demonstrations should be separate invocations with separate run directories.

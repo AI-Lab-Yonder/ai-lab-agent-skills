@@ -1,21 +1,21 @@
 ---
 name: skill-builder
-description: "Create well-structured Claude Code skills following Anthropic best practices. Use when building a new skill, improving an existing one, or when the user asks to create automation for a recurring workflow."
-version: 1.0.0
+description: "Create well-structured agent skills following cross-platform best practices. Use when building a new skill, improving an existing one, or creating automation for a recurring workflow."
+version: 1.1.0
 level: advanced
 category: meta
 ---
 
 # Skill Builder
 
-Meta-skill for creating Claude Code skills that follow Anthropic's best practices. Ensures consistent quality, proper progressive disclosure, and effective trigger descriptions across all skills.
+Meta-skill for creating agent skills that follow cross-platform best practices. Ensures consistent quality, proper progressive disclosure, and effective trigger descriptions across all skills.
 
 ## Constraints
 
-- Never create a skill that duplicates an existing one — always check `~/.claude/skills/` and `.claude/skills/` first
+- Never create a skill that duplicates an existing one — always check the active platform's user-level and repository-level skill roots first
 - Skills are folders, not just markdown files — always design the folder structure
 - The description field is for model triggering (when to activate), not a summary
-- Don't state the obvious — only include knowledge that pushes Claude beyond its defaults
+- Don't state the obvious — only include knowledge that pushes the executing agent beyond its defaults
 - Avoid railroading — give information + flexibility, not rigid step-by-step instructions
 
 ## Phase 0 — Understand What the User Wants
@@ -24,7 +24,7 @@ Before designing anything, understand the skill's purpose:
 
 1. Ask the user to describe the workflow they want to automate (or the problem the skill solves)
 2. Classify into one of the 9 categories — read `references/skill-categories.md` for classification guidance
-3. Determine scope: Is this a global skill (`~/.claude/skills/`) or project-specific (`.claude/skills/`)?
+3. Determine scope: Is this a user-level skill or a repository-specific skill? Use the active platform's corresponding skill roots.
 4. Check for existing skills that overlap — search both global and project skill directories
 
 Print the classification and ask the user to confirm before proceeding.
@@ -39,13 +39,13 @@ Every skill gets:
 
 Then add category-specific folders. Read `references/skill-categories.md` for what each category typically needs.
 
-Think about progressive disclosure: what should Claude see immediately (SKILL.md) vs. read on-demand (references/, examples/)?
+Think about progressive disclosure: what should the executing agent see immediately (SKILL.md) vs. read on-demand (references/, examples/)?
 
 Present the proposed folder structure to the user and confirm.
 
 ## Phase 2 — Write the Description
 
-The description field determines when Claude activates the skill. It should answer: "In what situation should this skill be triggered?"
+The description field determines when an agent activates the skill. It should answer: "In what situation should this skill be triggered?"
 
 Read `references/best-practices.md` for guidance on writing effective descriptions.
 
@@ -65,16 +65,16 @@ Read `references/best-practices.md` for content writing guidance. Then:
    - Frontmatter (name, description, version, level, category)
    - Constraints section (what the skill must NOT do)
    - Phases (the step-by-step workflow — but flexible, not railroading)
-   - Reference pointers: tell Claude which files in the skill folder to read and when
+   - Reference pointers: tell the executing agent which files in the skill folder to read and when
 
-2. **Write reference files** — detailed knowledge Claude reads on-demand:
+2. **Write reference files** — detailed knowledge the executing agent reads on-demand:
    - Focus on non-obvious knowledge (gotchas, edge cases, decisions)
-   - Don't duplicate what Claude already knows about standard tools/libraries
+   - Don't duplicate what a capable agent already knows about standard tools/libraries
    - Use progressive disclosure: SKILL.md says "read references/X.md for details on Y"
 
 3. **Write templates/scripts** — artifacts the skill uses:
    - Templates: files with clear placeholder markers the skill fills in
-   - Scripts: executable code Claude can run or compose with
+   - Scripts: executable code the agent can run or compose with
    - Examples: concrete reference implementations (not abstract)
 
 4. **Write gotchas.md** using `templates/gotchas.md.tmpl`:
@@ -85,12 +85,12 @@ Read `references/best-practices.md` for content writing guidance. Then:
 ## Phase 4 — Consider Setup & State
 
 Does the skill need persistent configuration?
-- If yes: create a `config.json` pattern where first-run asks user questions (via AskUserQuestion) and stores answers
+- If yes: create a `config.json` pattern where the first run asks user questions through the platform's structured question mechanism, or normal conversation when unavailable, and stores answers
 - If the skill produces outputs over time: plan where to store data (append-only log, JSON file, etc.)
 
 Does the skill need on-demand hooks?
-- If it should block certain actions during execution: define PreToolUse hooks
-- If it should react to tool outputs: define PostToolUse hooks
+- If it should block certain actions during execution: define the platform's pre-action lifecycle hooks when supported
+- If it should react to tool outputs: define the platform's post-action lifecycle hooks when supported
 - Only add hooks if they're genuinely useful — having them always-on is annoying
 
 ## Phase 5 — Review Against Best Practices Checklist
@@ -98,7 +98,7 @@ Does the skill need on-demand hooks?
 Before finalizing, verify against `references/best-practices.md` checklist:
 
 - [ ] Description is a trigger condition, not a summary
-- [ ] SKILL.md doesn't state what Claude already knows
+- [ ] SKILL.md doesn't state what a capable agent already knows
 - [ ] Gotchas section exists with empty sections ready for real failures
 - [ ] Progressive disclosure: detailed info in sub-files, not all in SKILL.md
 - [ ] Flexible instructions: gives info + room to adapt, not rigid commands
@@ -118,7 +118,7 @@ Category: <category>
 Files:
   <tree listing>
 
-To use: /<name> [arguments]
+To use: Invoke <name> with [arguments] through the active platform's skill mechanism
 To improve: Add gotchas as you discover failure points
-To share: Move to .claude/skills/ in a repo for team use
+To share: Place it in the active platform's repository-level skill root for team use
 ```

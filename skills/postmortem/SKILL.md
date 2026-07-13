@@ -1,41 +1,114 @@
 ---
 name: postmortem
-description: "Capture a lesson learned from a bug, architecture mistake, or misunderstanding into the relevant skill's gotchas.md. Use after any correction or failure to build persistent knowledge across sessions."
-version: 1.0.0
+description: "Draft and, after approval, capture an observed reusable lesson in an existing skill's gotchas.md. Use after a verified bug, architecture error, process failure, or misunderstanding when the lesson can be generalized without exposing project or user information."
+version: 1.1.0
 level: advanced
 category: meta
 ---
 
 # Post-Mortem Protocol
 
-Capture lessons from mistakes so they're never repeated. AI agents have no memory across sessions — a gotchas.md file is lightweight persistent learning.
+Turn verified failures into durable, reusable guidance. A gotcha records something that actually went wrong and explains how to avoid repeating it; it is not a place for hypothetical risks, ordinary requirements, or untested preferences.
 
-## 1. Classify
-- **BUG** — code didn't work (test, runtime, type, or lint error)
-- **ARCHITECTURE** — wrong structural choice (abstraction, pattern, layer, coupling)
-- **MISUNDERSTANDING** — misinterpreted user's intent (built wrong thing, wrong conventions)
+## Constraints
 
-## 2. Identify the target skill
-- Check conversation context for which skill was active
-- List available gotchas files in your skills directory
-- If ambiguous, ask: "Which skill does this belong to?"
+- Record only observed, evidence-supported failures with a verified cause or prevention.
+- Update only an existing `gotchas.md`. If no suitable file exists, report that the lesson was not stored and stop. Do not create or propose a new file.
+- Show the exact target and proposed text, then wait for approval before editing.
+- Distinguish repository-local files from shared or globally installed skills. Never edit a shared or global skill without explicit approval for that scope.
+- Remove secrets, personal information, private infrastructure details, and proprietary context.
+- Preserve the target file's structure and conventions.
+- Paraphrase user corrections; do not preserve exact user wording.
+- Keep the conditions that made the lesson true. Do not turn a contextual lesson into an absolute rule.
 
-## 3. Read existing gotchas
-Read the target skill's gotchas.md. Check for:
-- Duplicates → skip
-- Similar entries → refine instead of adding
-- Contradictions → resolve (keep the newer, more accurate one)
+## 1. Qualify the lesson
 
-## 4. Write the entry
+Confirm all of the following:
 
-**BUG:** `- **[BUG]** <what broke> → <prevention rule>`
-**ARCHITECTURE:** `- **[ARCHITECTURE]** <wrong choice> → <correct approach>: <why>`
-**MISUNDERSTANDING:** `- **[MISUNDERSTANDING]** Interpreted "<input>" as <wrong> → Correct: <right>`
+1. A failure, incorrect result, or user correction was actually observed.
+2. The cause or prevention is supported by evidence such as a test, log, diff, reproduced behavior, or clarified requirement.
+3. The lesson is likely to recur when the skill is used again.
+4. The lesson belongs in operational failure guidance.
 
-Rules:
-- Max 2 sentences — specific, actionable
-- MUST be project-agnostic — universal lesson, not current-project-specific
-- Timestamp: `<!-- ISO-8601 -->`
+Do not create a gotcha for:
 
-## 5. Confirm
-"Captured to <skill>/gotchas.md: <one-line summary>"
+- a normal requirement, design decision, or supported mode that should be expressed naturally in the skill's workflow;
+- a hypothetical concern that has not occurred;
+- a one-off project fact that belongs in project documentation; or
+- a guessed root cause that has not been verified.
+
+Classify the failure only when useful to the target file. Common categories include `BUG`, `ARCHITECTURE`, `PROCESS`, `MISUNDERSTANDING`, and `PRIVACY`.
+
+## 2. Locate the existing target
+
+Use the active skill and conversation context to identify the likely target, then find its existing `gotchas.md`.
+
+- If more than one existing file is plausible, ask the user which one should receive the lesson.
+- If no suitable `gotchas.md` exists, say: `No existing gotchas.md was found for <skill>; the lesson was not stored.` Then stop.
+- Identify whether the file is repository-local or part of a shared or globally installed skill.
+
+## 3. Establish the evidence
+
+Summarize three elements before drafting:
+
+- **What happened:** the observable failure or incorrect outcome.
+- **Why it happened:** the verified cause, including relevant conditions.
+- **What prevents it:** the smallest actionable change that would have avoided or detected it.
+
+If the evidence supports the symptom but not the cause, record neither as a gotcha until the cause or a reliable detection rule is established.
+
+## 4. Sanitize the lesson
+
+Generalize the lesson without destroying the conditions that make it useful. Remove or replace:
+
+- project, organization, person, customer, and product names;
+- private file paths, hosts, URLs, repository names, ticket numbers, identifiers, and branch names;
+- proprietary code, schemas, data, business rules, and internal terminology;
+- credentials, tokens, cookies, keys, and secret values; name only the category of secret when relevant; and
+- exact user wording or conversation excerpts.
+
+Use neutral placeholders only when the distinction matters. Re-read the draft specifically for information that could identify the source project or user.
+
+## 5. Compare with existing guidance
+
+Read the complete target file and choose one action:
+
+- **Skip:** an equivalent lesson already exists.
+- **Refine:** an existing entry is correct but missing an important condition, cause, or prevention.
+- **Append:** the lesson is distinct and belongs in the file.
+- **Resolve:** the lesson conflicts with existing guidance. Present the conflict and evidence instead of assuming the newer statement is correct.
+
+Place the lesson in the target file's existing section and follow its established format. Do not reorganize unrelated content during this workflow.
+
+## 6. Draft for approval
+
+When the target file has no established entry format, use:
+
+```markdown
+- **What goes wrong:** <observable failure and relevant conditions>
+  **Why:** <verified cause>
+  **Fix:** <specific prevention or detection rule>
+```
+
+Add a category or timestamp only if the target file already uses one. Keep the entry concise, but include enough context for another agent to apply it correctly.
+
+Before editing, show:
+
+- the exact file path;
+- whether its scope is repository-local or shared/global;
+- the proposed entry text;
+- the intended action: skip, refine, append, or resolve; and
+- any sanitization choices that materially changed the wording.
+
+Wait for explicit approval. Approval to record a repository-local lesson does not imply approval to modify a shared or globally installed skill.
+
+## 7. Write and verify
+
+After approval:
+
+1. Edit only the approved existing file and entry.
+2. Review the diff for unrelated changes.
+3. Re-read the final entry for sensitive or identifying information.
+4. Confirm that the entry matches the approved meaning and the file's format.
+
+Report the path, action taken, and a one-line summary. If the action was `skip`, report the matching existing guidance instead of changing the file.

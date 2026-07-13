@@ -1,7 +1,7 @@
 ---
 name: resolve-docs
-description: "Interactively resolve open questions and documentation gaps in project docs. Scans all docs for unknowns, proposes resolutions from existing sources, and interviews the user for the rest. Writes answers back into the correct doc files. Use when: onboarding to a project with incomplete docs, preparing docs for AI-DLC, or stress-testing a design by walking through every open question."
-version: 1.0.0
+description: "Interactively resolve open questions and documentation gaps in project docs. Scans all docs for unknowns, proposes resolutions from existing sources, and interviews the user for the rest. Writes answers back into the correct doc files. Use when: onboarding to a project with incomplete docs, preparing docs for a structured specification workflow, or stress-testing a design by walking through every open question."
+version: 1.0.1
 level: advanced
 category: documentation
 ---
@@ -15,7 +15,7 @@ Interactively find and resolve documentation gaps. Reads all project docs, ident
 - After setting up a `docs/` folder for a new project — fill in the gaps
 - Before a sprint starts — ensure all stories have enough detail for implementation
 - When onboarding to an unfamiliar codebase with partial documentation
-- When preparing documentation for AI-DLC / specsmd workflows
+- When preparing documentation for a structured specification workflow
 - To stress-test a design by systematically walking every open question
 
 ## Prerequisites
@@ -26,7 +26,7 @@ This skill expects a `docs/` folder with:
 - A `decisions/open-questions.md` file tracking unresolved items (can be empty)
 - Documentation files organized by topic (architecture, stories, domain, API, conventions, etc.)
 
-If this structure doesn't exist yet, **stop and tell the user** that a structured docs/ folder is a prerequisite. Recommend running `/docs-scaffold` first to create it from their initial documentation files.
+If this structure doesn't exist yet, **stop and tell the user** that a structured docs/ folder is a prerequisite. Recommend invoking the `docs-scaffold` skill through the platform's available mechanism first to create it from their initial documentation files.
 
 ## How It Works
 
@@ -65,26 +65,26 @@ For each gap, check whether it can be answered from:
 2. **Other docs** — the answer may already exist in a different file
 3. **API specs or config files** — for integration or configuration questions
 
-If you find an answer from these sources, **do NOT write it yet**. You MUST call the AskUserQuestion tool to present the proposed resolution. Structure the AskUserQuestion call as:
+If you find an answer from these sources, **do NOT write it yet**. Present the proposed resolution through the platform's structured question mechanism when one is available; otherwise ask in normal conversation. Structure the question as:
 
 - **question**: State the question ID, what you found, and from which source
-- **options**: Include "Yes, write it (Recommended)", "Skip", and let the user type their own adjustment via the built-in Other option
+- **options**: Include "Yes, write it (Recommended)" and "Skip", and allow the user to provide a custom adjustment
 - **header**: Use the question ID (e.g., "OQ-8")
 
-Only write the resolution after the user approves via the tool. If they provide a custom answer via Other, use their version instead.
+Only write the resolution after the user approves. If they provide a custom answer, use their version instead.
 
 ### Step 4: Interview the user
 
-For each gap that requires human input, you MUST call the **AskUserQuestion tool** — one question at a time. NEVER print questions as text output and wait for typed responses. Always use the tool.
+For each gap that requires human input, ask one question at a time. Use the platform's structured question mechanism when available; otherwise ask in normal conversation and wait for the response.
 
-Structure each AskUserQuestion call as:
+Structure each question as:
 
 - **question**: State the question ID, describe the gap and why it matters
 - **header**: Use the question ID (e.g., "OQ-1")
-- **options**: Always include your recommended answer as the first option with "(Recommended)" suffix, plus "Skip" as the last option. The user can always type their own answer via the built-in Other option.
+- **options**: Always include your recommended answer as the first option with "(Recommended)" suffix, plus "Skip" as the last option. Allow the user to provide a custom answer.
 - If the question has natural multiple-choice answers (e.g., "Maven or Gradle?"), list those as options with your recommendation first
 
-Do not batch questions. Wait for the AskUserQuestion response before moving to the next question.
+Do not batch questions. Wait for the user's response before moving to the next question.
 
 ### Step 5: Write answers back
 
@@ -112,7 +112,7 @@ If resolving a gap requires information from a reference file:
 
 ## Rules
 
-- **CRITICAL: Always use the AskUserQuestion tool for Steps 3 and 4.** Never print a question as plain text and wait for the user to type. Every question must go through AskUserQuestion so the user gets a structured UI with selectable options.
+- **For Steps 3 and 4, prefer a structured question interface when the platform provides one.** Otherwise use normal conversation while preserving the same one-question-at-a-time approval flow.
 - Never guess or fabricate answers — if you don't know, ask
 - Keep doc edits minimal and focused — don't rewrite entire files
 - Preserve existing structure and cross-references
@@ -121,7 +121,7 @@ If resolving a gap requires information from a reference file:
 ## Example Session
 
 ```
-User: /resolve-docs
+User: [invokes the resolve-docs skill]
 
 Agent: [Reads all docs, presents understanding summary]
        "Is this understanding correct?"
@@ -131,12 +131,12 @@ User: "Yes"
 Agent: [Scans for gaps, finds 12 open questions + 3 undocumented gaps]
        "Found 15 gaps. 2 can be resolved from existing docs."
 
-       [AskUserQuestion: "OQ-8 is already answered in the API spec. Write it?"]
+       [Structured question or conversational prompt: "OQ-8 is already answered in the API spec. Write it?"]
 User: "Yes"
 Agent: [Updates open-questions.md, notes API doc already had the info]
 
-       [AskUserQuestion: "OQ-1: How does the app connect to the database?
-        Recommended: Use H2 for local dev, real instance for integration tests"]
+       [Structured question or conversational prompt: "OQ-1: How does the app connect to the database?
+        Recommended: Use an embedded database locally and the configured integration database for integration tests"]
 User: "Yes"
 Agent: [Writes to architecture doc, updates open-questions.md]
 

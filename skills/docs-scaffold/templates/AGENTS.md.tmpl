@@ -1,33 +1,56 @@
+<!--
+TEMPLATE INSTRUCTIONS — remove this comment from the final file.
+
+- Keep Documentation, Project Context, and Resolving Unknowns.
+- Include each OPTIONAL block only when the corresponding docs or rules exist.
+- Add project-specific sections only when supported by the source or confirmed by the user.
+- Remove every unused block, placeholder, and template comment.
+-->
+
 # {{PROJECT_NAME}} — Project Instructions
 
 ## Documentation
 
-All project documentation lives in `docs/`. Start with the index:
+Project documentation lives in `docs/`. Start with:
 
-- **[docs/INDEX.md](docs/INDEX.md)** — Entry point for all documentation. Read this first to understand the project structure and find the right context for your task.
+- **[docs/INDEX.md](docs/INDEX.md)** — Find the context relevant to the current task.
+
+Before changing the project, read the relevant documentation and the documents it links to.
 
 ## Project Context
 
 {{PROJECT_SUMMARY}}
 
-## Key Rules
+<!-- OPTIONAL: Include only when stories/ or slices/ exists. Refer only to the selected work-unit type. -->
+## Work Units
 
-### Documentation-First
+{{WORK_UNIT_RULES}}
 
-- Before implementing anything, read the relevant story doc in `docs/stories/` and all linked docs
-- Cross-cutting conventions in `docs/conventions/` apply to ALL layers/features
-- Check `docs/decisions/open-questions.md` for unresolved items that may affect your work
-
-### Domain Language
+<!-- OPTIONAL: Include only when domain language rules or a glossary exists. -->
+## Domain Language
 
 {{DOMAIN_LANGUAGE_RULES}}
 
-### API Spec Handling
+<!-- OPTIONAL: Include only when API or integration references require special handling. -->
+## Integration References
 
 {{API_SPEC_RULES}}
 
-### Resolving Unknowns
+<!-- OPTIONAL: Include only when conventions docs exist. -->
+## Conventions
 
-- If you encounter a gap in the docs, check `docs/decisions/open-questions.md` first
-- If the question isn't listed, add it to `open-questions.md` before proceeding
-- Use `/resolve-docs` to interactively work through open questions with the user
+{{CONVENTION_RULES}}
+
+<!-- OPTIONAL: Include only when operational docs or constraints exist. -->
+## Operations
+
+{{OPERATIONS_RULES}}
+
+## Resolving Unknowns
+
+- Check `docs/decisions/open-questions.md` for unresolved items that may affect the work.
+- Add newly discovered documentation gaps there instead of guessing.
+- Use the `resolve-docs` skill to work through open questions interactively.
+
+<!-- OPTIONAL: Add other confirmed project rules here, then remove this comment. -->
+{{ADDITIONAL_PROJECT_RULES}}

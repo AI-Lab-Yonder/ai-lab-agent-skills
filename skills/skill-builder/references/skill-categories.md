@@ -1,19 +1,19 @@
 # Skill Categories
 
-9 categories for classifying Claude Code skills. Use this to determine the right structure and patterns for a new skill.
+9 categories for classifying agent skills. Use this to determine the right structure and patterns for a new skill.
 
 ---
 
 ## 1. Library & API Reference
 
-**What it is**: Skills explaining how to correctly use a library, CLI, or internal SDK — focusing on what Claude gets wrong without guidance.
+**What it is**: Skills explaining how to correctly use a library, CLI, or internal SDK — focusing on what an agent gets wrong without guidance.
 
-**When to use**: The user repeatedly corrects Claude on API usage, or an internal tool has non-obvious patterns that Claude can't discover from public docs.
+**When to use**: The user repeatedly corrects the agent on API usage, or an internal tool has non-obvious patterns that the agent can't discover from public docs.
 
 **Typical folder structure**:
 ```
 references/     # API docs, code snippets, pattern guides
-snippets/       # Working examples Claude can copy/adapt
+snippets/       # Working examples the agent can copy/adapt
 ```
 
 **Key success factors**:
@@ -81,7 +81,7 @@ logs/           # Execution history for consistency across runs
 
 **Key success factors**:
 - Save results in log files so the skill can reflect on previous executions
-- First-run setup via AskUserQuestion to capture user-specific config
+- First-run setup through the available structured question mechanism, or normal conversation when unavailable, to capture user-specific config
 - Idempotent where possible — safe to re-run
 
 **Examples**: standup-post, create-ticket, weekly-recap
@@ -124,7 +124,7 @@ scripts/        # Linters, analyzers, custom checks
 
 **Key success factors**:
 - Consider deterministic scripts for maximum robustness
-- Can run via hooks (PostToolUse) or CI for continuous enforcement
+- Can run via supported post-action lifecycle hooks or CI for continuous enforcement
 - Separate "must fix" from "nice to have" findings
 
 **Examples**: adversarial-review, code-style, testing-practices

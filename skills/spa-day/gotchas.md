@@ -1,6 +1,6 @@
 # Gotchas
 
-Known failure points for this skill. **Update this file** whenever Claude hits a new edge case or the skill produces incorrect output.
+Known failure points for this skill. **Update this file** whenever the executing agent hits a new edge case or the skill produces incorrect output.
 
 ## Format
 

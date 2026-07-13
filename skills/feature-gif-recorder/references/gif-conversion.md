@@ -1,66 +1,47 @@
 # GIF Conversion
 
-How to turn `frames/*.png` into a small, sharp GIF.
+Use the tested cross-platform Node helper rather than shell-specific path or glob handling.
 
-## Default: ffmpeg, two-pass with palette
+## Command
 
-The `scripts/frames-to-gif.sh` helper does this. Manual form:
+Resolve the installed skill directory, then run:
 
-```bash
-slug=add-todo
-src="recordings/$slug/frames"
-out="recordings/$slug/$slug.gif"
-fps=4
-width=720
-
-ffmpeg -y -framerate $fps -i "$src/%03d.png" \
-  -vf "scale=$width:-1:flags=lanczos,palettegen=stats_mode=diff" \
-  "$src/_palette.png"
-
-ffmpeg -y -framerate $fps -i "$src/%03d.png" -i "$src/_palette.png" \
-  -lavfi "scale=$width:-1:flags=lanczos [x]; [x][1:v] paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" \
-  "$out"
+```text
+node <skill-dir>/scripts/frames-to-gif.mjs <run-dir> [fps] [width]
 ```
 
-`stats_mode=diff` + `paletteuse diff_mode=rectangle` is the magic combo for UI screenshots — it keeps the palette stable between near-identical frames so flat backgrounds don't shimmer.
+Defaults:
 
-## Knobs
+| Setting | Default | Valid range |
+|---|---:|---:|
+| FPS | 4 | greater than 0 and at most 60 |
+| Width | 720 | integer from 1 through 16384 |
 
-| Knob              | Effect                                              | Default |
-|-------------------|-----------------------------------------------------|---------|
-| `fps`             | Frame rate. Higher = smoother + bigger.            | 4       |
-| `width`           | Output width in pixels. Height auto-keeps ratio.   | 720     |
-| `dither=…`        | `bayer:bayer_scale=5` for UIs, `none` for flat UI. | bayer 5 |
-| `loop`            | `-loop 0` infinite, `-loop 1` play once.           | 0       |
+The helper:
 
-## Size targets
+- Accepts the exact run directory, including timestamped directories and paths with spaces
+- Reads only contiguous `000.png`, `001.png`, ... frames
+- Ignores helper images such as `_palette.png`
+- Prefers ffmpeg with two-pass palette generation
+- Falls back to ImageMagick when `magick` is available
+- Fails clearly when no converter is installed or no valid frames exist
 
-- PR / changelog inline: ≤ 2 MB. Drop fps to 3 or width to 600 if you blow past this.
-- Docs site hero: ≤ 5 MB.
-- If the GIF is > 8 MB, switch to MP4 / WebM. MP4 in a `<video>` tag is 5–10× smaller and loops fine; PRs and most markdown renderers accept it.
+## ffmpeg Strategy
 
-```bash
-ffmpeg -y -framerate $fps -i "$src/%03d.png" -c:v libx264 -pix_fmt yuv420p \
-  -vf "scale=$width:-2:flags=lanczos,fps=$fps" "${out%.gif}.mp4"
-```
+The helper uses lanczos scaling, palette generation with `stats_mode=diff`, and palette application with bounded Bayer dithering and `diff_mode=rectangle`. This reduces shimmer in mostly static interfaces.
 
-## ImageMagick fallback
+## ImageMagick Fallback
 
-If `ffmpeg` is unavailable but `magick` is:
+The helper passes each validated frame path to `magick`, avoiding shell glob differences. ImageMagick generally produces a larger or less stable palette than the ffmpeg path, so the summary must report which engine was used.
 
-```bash
-magick -delay 25 -loop 0 "$src/*.png" -layers Optimize -resize 720x "$out"
-```
+## Size Guidance
 
-Quality is worse — palette per-frame, no diff mode — but acceptable for short flows.
+- Inline review or changelog asset: target 2 MB or less
+- Documentation asset: target 5 MB or less
+- Above 8 MB: consider fewer frames, lower FPS, a smaller width, or a video format supported by the intended host
 
-## Repo bloat warning
+Do not assume every pull-request renderer accepts embedded video.
 
-Recorded GIFs add up fast. If you're committing them, add to `.gitattributes`:
+## Repository Size
 
-```
-recordings/**/*.gif filter=lfs diff=lfs merge=lfs -text
-recordings/**/*.png filter=lfs diff=lfs merge=lfs -text
-```
-
-Or `.gitignore` the `frames/` folder and only commit the final GIFs.
+Frames, scripts, and metadata should normally remain uncommitted. If the user explicitly chooses to commit GIFs, discuss repository growth first. Suggest Git LFS or an external approved artifact store only when appropriate; never change `.gitattributes` automatically.

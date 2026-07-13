@@ -1,23 +1,43 @@
 ---
 name: adversarial-bug-hunt
-description: Discover bugs through a 3-agent adversarial pipeline (finder → adversarial → referee) that exploits sycophancy for high-fidelity results. Use when reviewing code for bugs, especially when single-agent review isn't sufficient.
-version: 1.0.1
+description: Use when reviewing code for bugs with finder, challenger, and referee roles, especially when independent review is needed to reduce false positives.
+version: 1.1.0
 level: advanced
 category: code-quality
 ---
 
 # Adversarial Bug Hunt
 
-Three-agent bug discovery pipeline. A bug-finder over-reports, an adversarial agent disproves, a referee resolves. Each agent runs in a clean context to prevent cross-contamination.
+Three-role bug discovery pipeline. A bug-finder over-reports, an adversarial reviewer challenges, and a referee resolves. Prefer clean, isolated contexts; when the runtime cannot provide them, use the documented reduced-assurance fallback instead of inventing platform-specific tools.
 
 ## Constraints
 
 - Read `gotchas.md` before starting
-- Each agent MUST be a separate `Agent` tool launch — never reuse context between agents
+- Select an execution mode before reviewing; use the strongest mode the current runtime actually supports
+- Prefer a separate clean context for each role to prevent cross-contamination
+- Same-context sequential execution is allowed only as the disclosed reduced-assurance fallback
 - Scoring numbers are a **prompt technique** — they bias agent behavior via sycophancy, they are not tracked
 - The referee is told "ground truth exists" — this is **intentional design** that makes it more careful, not a mistake
-- Do NOT perform your own code review — your job is orchestration and presentation only
-- All agents must produce structured JSON output
+- Do not add an extra, unstructured review outside the selected three-role pipeline
+- All roles must produce structured JSON output
+
+---
+
+## Runtime Mode
+
+Choose the first available mode. Do not assume tool names or ask the user to install another agent runtime.
+
+| Mode | How to run the roles | Assurance |
+|---|---|---|
+| **Isolated workers** | Launch each role with the runtime's native delegation mechanism in a separate clean context | Preferred |
+| **External isolated sessions** | Run each role in a separate available process or session that can read the review scope | Preferred |
+| **Sequential fallback** | Run the three prompt templates as separate passes in the current context, preserving each JSON handoff | Reduced |
+
+For sequential fallback, tell the user before Phase 1:
+
+> This runtime cannot isolate the three reviewers. I can run the same finder → adversarial → referee pipeline sequentially, but the roles may influence one another, so the result has reduced assurance.
+
+Record the selected mode in the final report. Never describe sequential fallback as independent or clean-context review.
 
 ---
 
@@ -31,7 +51,7 @@ If the user provided a scope (files, directory, "uncommitted changes"), use it. 
 
 Read `references/agent-prompts.md` for the bug-finder prompt template.
 
-Launch an `Agent` (general-purpose) with the bug-finder prompt, passing the scope. This agent is incentivized to over-report — it produces the **superset** of all possible bugs.
+Run the bug-finder prompt with the selected execution mode, passing the scope. In an isolated mode, start a fresh worker or session. In sequential fallback, run it as the first pass. The role is incentivized to over-report and produces the **superset** of possible bugs.
 
 Receives: JSON array of findings using the schema in `templates/finding-schema.json`.
 
@@ -41,7 +61,7 @@ Receives: JSON array of findings using the schema in `templates/finding-schema.j
 
 Read `references/agent-prompts.md` for the adversarial prompt template.
 
-Launch an `Agent` (general-purpose) with the adversarial prompt, passing the bug-finder's full output. This agent is incentivized to disprove — it produces the **subset** of likely real bugs.
+Run the adversarial prompt with the selected execution mode, passing the bug-finder's full JSON output. Use a fresh context in either isolated mode; otherwise run it as the second sequential pass. The role is incentivized to disprove and produces the **subset** of likely real bugs.
 
 Receives: same findings array, each annotated with `adversarial_verdict` and `adversarial_reasoning`.
 
@@ -51,7 +71,7 @@ Receives: same findings array, each annotated with `adversarial_verdict` and `ad
 
 Read `references/agent-prompts.md` for the referee prompt template.
 
-Launch an `Agent` (general-purpose) with both agents' outputs. The referee resolves each dispute.
+Run the referee prompt with the selected execution mode, passing both prior outputs. Use a fresh context in either isolated mode; otherwise run it as the third sequential pass. The referee resolves each dispute.
 
 Receives: same findings array, each annotated with `referee_verdict` and `referee_reasoning`.
 
@@ -66,4 +86,4 @@ Show only CONFIRMED + UNCERTAIN findings. If all findings are DISPROVED: say "No
 Otherwise, ask the user which finding IDs to fix:
 > "Which issues would you like me to fix? You can list IDs (e.g., BUG-001, BUG-003) or say 'all'."
 
-**CRITICAL — next turn action:** When the user replies, your **very first tool call** MUST be `EnterPlanMode`. The plan must reference the specific findings, evidence, and fix recommendations from the report.
+When the user replies, prepare a fix plan before editing. Use the runtime's native planning mode when one exists; otherwise present the plan directly in chat and wait for approval. The plan must reference the selected findings, evidence, and fix recommendations from the report.

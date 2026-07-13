@@ -8,6 +8,8 @@ Show first, before any findings:
 
 - Scope reviewed
 - Pipeline: Bug-Finder → Adversarial → Referee
+- Execution mode: isolated workers / external isolated sessions / sequential fallback
+- Assurance: preferred / reduced
 - Verdict counts: **confirmed** / **uncertain** / **disproved** (total)
 - Overall confidence score
 
@@ -41,11 +43,9 @@ If every finding has `referee_verdict: "DISPROVED"`:
 
 ## Fix Selection
 
-Same pattern as codex-review Phase 3:
-
 > "Which issues would you like me to fix? You can list IDs (e.g., BUG-001, BUG-003) or say 'all'."
 
-When the user replies, the very first tool call MUST be `EnterPlanMode`.
+When the user replies, prepare a fix plan before editing. Use the runtime's native planning mode when available; otherwise present the plan in chat and wait for approval.
 
 ## Examples
 
