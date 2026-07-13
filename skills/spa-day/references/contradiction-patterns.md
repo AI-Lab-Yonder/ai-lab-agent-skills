@@ -48,7 +48,7 @@ Six pattern types to check when auditing rules and skills. For each finding, quo
 
 **What to look for**: A global rule says one thing, a project-level rule says the opposite. This may be intentional (project overrides global) or accidental.
 
-**How to detect**: Compare global (`~/.claude/rules/`) against project (`.claude/rules/`) files with the same name or covering the same topic.
+**How to detect**: Compare the active platform's user-level rules against its repository-level rules with the same name or covering the same topic.
 
 **Typical resolution**: Project-level rules intentionally override global rules. Flag for user confirmation but default to "this is intentional" unless the content looks like a copy-paste error.
 
@@ -59,7 +59,7 @@ Six pattern types to check when auditing rules and skills. For each finding, quo
 **What to look for**: Rules or skills that reference deprecated tools, removed files, old API patterns, or approaches the user has moved past.
 
 **How to detect**:
-- CLAUDE.md references files that don't exist (dead references)
+- Instruction entry files reference files that don't exist (dead references)
 - Rules mention tools/libraries no longer in use
 - Skills reference patterns that conflict with more recent rules
 - Gotchas entries that have been addressed by rule changes

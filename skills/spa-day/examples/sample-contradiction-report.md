@@ -1,6 +1,6 @@
 # Sample: Contradiction Report
 
-Audit of global scope (`~/.claude/`). Found 2 contradictions, 1 redundancy, 1 dead reference, 1 oversized file.
+Audit of user-level scope (`<user-config-root>/`). Found 2 contradictions, 1 redundancy, 1 dead reference, 1 oversized file.
 
 ---
 
@@ -8,14 +8,14 @@ Audit of global scope (`~/.claude/`). Found 2 contradictions, 1 redundancy, 1 de
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `CLAUDE.md` | Global instructions directory | 61 |
+| `AGENTS.md` | User-level instructions directory | 61 |
 | `rules/common/testing.md` | Testing requirements | 32 |
 | `rules/common/coding-style.md` | Code style rules | 48 |
 | `rules/python/testing.md` | Python testing rules | 28 |
 | `rules/python/coding-style.md` | Python code style | 35 |
 | `rules/typescript/testing.md` | TypeScript testing rules | 30 |
-| `skills/codex-review/SKILL.md` | Codex code review | 55 |
-| `skills/adversarial-bug-hunt/SKILL.md` | Adversarial bug hunt | 62 |
+| `skills/review-changes/SKILL.md` | Change review | 55 |
+| `skills/investigate-failure/SKILL.md` | Failure investigation | 62 |
 | ... | _(16 more files)_ | ... |
 
 **Total**: 24 files, 1,847 lines
@@ -43,7 +43,7 @@ Audit of global scope (`~/.claude/`). Found 2 contradictions, 1 redundancy, 1 de
 **File A**: `rules/common/git-workflow.md` (line 5)
 > "Format: `<type>: <description>`"
 
-**File B**: `CLAUDE.md` (line 52, Self-Improvement Protocol)
+**File B**: `AGENTS.md` (line 52, Self-Improvement Protocol)
 > Gotcha format uses `<!-- timestamp -->` comments in commits
 
 **Conflict**: Minor — git-workflow defines commit format but Self-Improvement Protocol implies appending metadata comments. Not a direct contradiction but could confuse.
@@ -72,12 +72,12 @@ Audit of global scope (`~/.claude/`). Found 2 contradictions, 1 redundancy, 1 de
 
 ### DEAD-001: Missing rule file reference
 
-**In**: `CLAUDE.md` (line 38)
+**In**: `AGENTS.md` (line 38)
 > "read coding-test-failing-rules.MD"
 
 **Problem**: File `rules/common/coding-test-failing-rules.md` does not exist.
 
-**Recommendation**: Either create the file or remove the reference from CLAUDE.md.
+**Recommendation**: Either create the file or remove the reference from `AGENTS.md`.
 
 ---
 

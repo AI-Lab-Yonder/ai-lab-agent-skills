@@ -1,6 +1,6 @@
 # Sample: Healthy Report
 
-Audit of global scope (`~/.claude/`). No issues found.
+Audit of user-level scope (`<user-config-root>/`). No issues found.
 
 ---
 
@@ -8,14 +8,14 @@ Audit of global scope (`~/.claude/`). No issues found.
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `CLAUDE.md` | Global instructions directory | 58 |
+| `AGENTS.md` | User-level instructions directory | 58 |
 | `rules/common/testing.md` | Testing requirements | 32 |
 | `rules/common/coding-style.md` | Code style rules | 45 |
 | `rules/common/git-workflow.md` | Git workflow | 28 |
 | `rules/common/security.md` | Security guidelines | 38 |
 | `rules/python/testing.md` | Python testing | 25 |
-| `skills/codex-review/SKILL.md` | Codex review | 55 |
-| `skills/spa-day/SKILL.md` | Spa day audit | 60 |
+| `skills/review-changes/SKILL.md` | Change review | 55 |
+| `skills/audit-config/SKILL.md` | Configuration audit | 60 |
 | ... | _(12 more files)_ | ... |
 
 **Total**: 20 files, 1,420 lines
