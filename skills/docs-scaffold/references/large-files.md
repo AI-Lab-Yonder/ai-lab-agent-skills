@@ -1,55 +1,52 @@
 # Handling Reference Files
 
-How to handle OpenAPI specs, database schemas, and other reference files. Read this during Phase 6 or whenever the user provides a reference file.
+Use this protocol for OpenAPI specifications, database schemas, data dictionaries, and other reference material.
 
-## Size Check (do this first)
+## Check Before Loading
 
-Not all reference files are large. **Check the actual file size before deciding how to handle it.**
+Inspect the file's size, format, relevance, and sensitivity first. File size is only a rough proxy for context cost.
 
-- **Small (under ~200KB):** Load directly into context. Read and extract what you need — no special handling required.
-- **Large (200KB+):** Follow the protocol below.
+- **Small and relevant:** Read directly when it fits comfortably in the available context.
+- **Large, highly structured, or only partly relevant:** Search or read targeted sections instead of loading the full file.
+- **Sensitive or restricted:** Confirm permitted handling before reading, copying, summarizing, or exposing content in generated docs.
 
-Common reference file types (size varies — always check):
-- OpenAPI / Swagger specs (can range from 10KB to 5MB+)
-- Database schema dumps / DDL files
-- WSDL files
-- Large configuration files
-- Data dictionaries
+A threshold around 200 KB can trigger caution, but do not treat it as universal. Compressed formats, generated JSON, binary files, and the runtime's remaining context can require a lower threshold.
 
-## Protocol (for large files only)
+## Protocol
 
-1. **Do not auto-load.** Ask the user: "I see [file name] (~[size]). Should I load it to distill the relevant parts?"
-2. If approved, **search for specific paths/schemas** — do not read the entire file
-3. Distill only endpoints/schemas **relevant to the current stories** into a readable markdown file
-4. Store the original file in `api/specs/` (or equivalent subfolder)
+1. Report the file name, approximate size, format, and why it may be relevant.
+2. For large or sensitive files, ask before loading or distilling them.
+3. If approved, search for the specific paths, schemas, sections, or terms needed by the documentation.
+4. Distill only the relevant material into a readable document.
+5. Add a mapping to related documents or approved work units when it improves navigation.
+6. Do not copy the raw reference into the repository by default.
+7. Copy it only when the user approves and confidentiality, licensing, repository policy, and version-control impact allow it. Otherwise link to its approved existing location.
 
-## Distilled Doc Structure
+## Distilled Document
 
-The distilled doc should contain:
+Include only applicable sections:
 
-1. **Warning banner** at the top:
-   ```
-   > This doc covers only the endpoints relevant to current stories.
-   > The full spec is at `specs/[filename]` (~[size]).
-   > **Do not auto-load.** Ask the user before reading.
-   > If this doc doesn't answer your question, ask whether to distill more.
-   ```
+1. A scope note explaining what was distilled and what remains in the full reference
+2. The approved location and access warning for the full reference
+3. Relevant connection, authentication, or format details
+4. Relevant endpoints, schemas, tables, or definitions
+5. A mapping table when relationships to other docs or work units matter
 
-2. **Base URL and auth flow** — server URL, auth mechanism, token endpoints
-3. **Relevant endpoints only** — path, method, description, request/response schemas
-4. **Mapping table** bridging API endpoints to stories:
-   ```markdown
-   | Story | Primary Endpoint | Operation |
-   |-------|-----------------|-----------|
-   | [Story name] | `GET /v1/resource` | Read resources for transformation |
-   ```
+Example mapping:
+
+```markdown
+| Related document or work unit | Reference item | Purpose |
+|---|---|---|
+| [Import guide] | `GET /v1/items` | Retrieve records for the documented import flow |
+```
 
 ## INDEX.md Warning
 
-INDEX.md must include a size note about the specs folder:
+When a large or restricted reference is retained or linked, add a concise warning to the relevant optional INDEX section:
 
 ```markdown
-## API
-- [API Reference](api/api-name.md) — Distilled endpoints (read this first)
-- [Full Spec](api/specs/) — Raw JSON/YAML (~X MB). **Check size before loading.** If large, ask the user before reading.
+- [Distilled Reference](api/external-api.md) — Relevant material; read this first
+- Full reference — Stored at the approved location. Check size and access restrictions before loading.
 ```
+
+Do not create a raw-spec INDEX entry when no raw reference was copied or linked.

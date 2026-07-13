@@ -13,52 +13,56 @@ Each gotcha follows this pattern:
 
 ## Large Reference Files
 
-- **What goes wrong**: Agent auto-loads a 4.3MB OpenAPI spec, consuming most of the context window, degrading quality of all subsequent output.
-- **Why**: The agent sees a JSON file referenced in the docs and reads it eagerly without checking size.
-- **Fix**: Always ask the user before loading any file in `api/specs/`. Add explicit "do not auto-load" warnings in INDEX.md, the distilled API doc, and AGENTS.md. Search for specific paths/schemas instead of reading the full file.
+- **What goes wrong**: The agent auto-loads a multi-megabyte structured reference, consuming too much context and degrading later output.
+- **Why**: A referenced file is read eagerly without checking its size, relevance, format, or sensitivity.
+- **Fix**: Inspect metadata first. For large or restricted files, ask before loading and search targeted sections instead of reading the whole file.
 
-- **What goes wrong**: Distilled API doc lacks a mapping table connecting endpoints to stories, so developers don't know which endpoints matter for their story.
-- **Why**: The distillation focused on extracting schemas and endpoint details but forgot to bridge back to the stories.
-- **Fix**: Always include a "Mapping to Stories" table at the bottom of distilled API docs showing: Story | Primary Endpoint | Operation.
+- **What goes wrong**: A distilled reference has no connection to the documents or approved work units that use it.
+- **Why**: Distillation captures technical details but omits navigation back to the rest of the documentation.
+- **Fix**: Add a mapping table when relationships matter: related document or work unit, reference item, and purpose.
+
+- **What goes wrong**: A raw specification is copied into version control even though it is restricted, licensed separately, or already stored elsewhere.
+- **Why**: The workflow treats `api/specs/` as a required destination rather than an optional approved location.
+- **Fix**: Do not copy by default. Confirm confidentiality, licensing, repository policy, and user intent; otherwise link to the approved existing location.
 
 ## Cross-Cutting Concerns
 
-- **What goes wrong**: Logging/status tracking pattern is described separately in each story file, creating duplication and inconsistency.
-- **Why**: Cross-cutting concerns feel like "part of each story" during splitting, so they get copied into every story instead of extracted into `conventions/`.
-- **Fix**: Before writing story files, identify patterns that appear in 2+ stories. Extract these into `conventions/` first, then link from each story.
+- **What goes wrong**: The same logging, status, retry, or security guidance is repeated across several documents or work units.
+- **Why**: Shared concerns are handled locally while splitting instead of being identified across the complete source set.
+- **Fix**: Extract system rationale into architecture and actionable repeated rules into conventions, then link instead of duplicating.
 
-## Story Splitting
+## Forced Work Units
 
-- **What goes wrong**: Two short stories get combined into one file "for convenience", causing confusion when different developers own different stories.
-- **Why**: The stories seemed related or small enough to merge.
-- **Fix**: One story per file, always. Even a 10-line story gets its own file. Stories are the unit of work assignment.
+- **What goes wrong**: The skill creates a `stories/` or `slices/` folder for reference-only documentation that has no work assignments.
+- **Why**: Earlier constraints, templates, and examples treated stories as the default structure.
+- **Fix**: Default to no work-unit folder. Preserve `stories/` only for explicit source stories; create `slices/` only after the user approves an incremental breakdown.
 
 ## Domain Glossary
 
-- **What goes wrong**: Agent uses inconsistent naming throughout the generated docs — mixing Dutch and English terms, or using different English translations for the same Dutch term.
-- **Why**: Without a glossary created first, the agent has no canonical mapping to follow.
-- **Fix**: If the source material contains non-English terms or domain jargon, create `domain/glossary.md` BEFORE writing other files. Reference it during all subsequent file creation.
+- **What goes wrong**: Generated docs use inconsistent names for the same concept across languages or teams.
+- **Why**: No canonical glossary is established before other documents are written.
+- **Fix**: When the source uses mixed languages or domain jargon, create the glossary before documents that depend on those terms.
 
 ## INDEX.md Quality
 
-- **What goes wrong**: INDEX.md is a flat file list with no navigation guidance. AI agents don't know which file to read first for their task.
-- **Why**: The skill generated a table of contents but skipped the "How to Use" instructions.
-- **Fix**: INDEX.md must start with a "How to Use This Index" section with scenario-based instructions: "Starting a story? Read X. Need API details? Read Y first."
+- **What goes wrong**: INDEX.md contains empty template sections or a flat list with no navigation guidance.
+- **Why**: The template is treated as a required folder checklist rather than an adaptive starting point.
+- **Fix**: Remove unused blocks and write task-oriented navigation for the folders that actually exist.
 
 ## Confirmation Checkpoints
 
-- **What goes wrong**: Agent creates 14 files based on a misunderstanding of the project, then the user has to ask for all of them to be redone.
-- **Why**: The skill skipped the confirmation step and went straight to file creation.
-- **Fix**: Always present understanding (Phase 0) AND planned structure (Phase 1) for explicit user confirmation before creating any files. Two checkpoints, not one.
+- **What goes wrong**: Many files are created from a mistaken understanding or an unwanted work-unit model.
+- **Why**: The workflow skips confirmation of the source summary or planned tree.
+- **Fix**: Confirm understanding and structure separately. The structure checkpoint must explicitly show whether stories, slices, or neither will be created.
 
 ## Content Invention
 
-- **What goes wrong**: Agent fills in plausible-looking technical details that were not in the source material (e.g., inventing database schema fields, guessing API response formats).
-- **Why**: The agent tries to be helpful by filling gaps rather than flagging them.
-- **Fix**: Anything not explicitly in the source material goes into `open-questions.md` as a gap, never into the docs as assumed fact. The strict rule: if you can't point to the source line, it's an open question.
+- **What goes wrong**: Generated docs contain plausible technical details that were neither present in the source nor confirmed by the user.
+- **Why**: The agent fills gaps to make documents appear complete.
+- **Fix**: Put unsupported details in `open-questions.md`; do not present them as facts.
 
-## AGENTS.md vs CLAUDE.md
+## Project Instruction Files
 
-- **What goes wrong**: Skill creates CLAUDE.md, which only works with Claude Code. Other AI tools (Codex, etc.) don't read it.
-- **Why**: CLAUDE.md is a Claude Code-specific convention.
-- **Fix**: Use AGENTS.md for the project root file. This is tool-universal. If a CLAUDE.md already exists, ask the user how to reconcile rather than overwriting.
+- **What goes wrong**: The skill overwrites an existing instruction file or creates duplicated, conflicting guidance across several root files.
+- **Why**: It assumes one filename must replace every existing convention.
+- **Fix**: Recommend AGENTS.md as the general default, inspect existing instruction files, and let the user choose one canonical source plus short pointers where needed.

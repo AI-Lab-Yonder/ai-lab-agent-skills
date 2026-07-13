@@ -1,51 +1,73 @@
+<!--
+TEMPLATE INSTRUCTIONS — remove this comment from the final file.
+
+- Keep the title, How to Use section, and Decisions section.
+- Include an OPTIONAL block only when its folder or content exists.
+- Replace list placeholders with real links and descriptions.
+- Add a new optional section for coherent content types not listed here.
+- Remove every unused block, placeholder, and template comment.
+-->
+
 # {{PROJECT_NAME}} — Documentation Index
 
-This is the entry point for all project documentation. When working on this project, start here to find the relevant context.
+This is the entry point for project documentation.
 
 ## How to Use This Index
 
-- **Starting a story?** Read the relevant story doc + the architecture and conventions it links to.
-- **Need domain context?** Check `domain/` for term definitions.
-- **Unsure about something?** Check `decisions/open-questions.md` — or run `/resolve-docs` to work through unknowns interactively.
-- **Need API details?** Read the distilled API doc first. Only load full specs if needed (ask the user first).
+{{TASK_ORIENTED_NAVIGATION_BULLETS}}
 
----
+- **Unsure about something?** Check `decisions/open-questions.md` or use the `resolve-docs` skill.
 
+<!-- OPTIONAL: Include only when architecture documentation exists. -->
 ## Architecture
 
-System design, data model, and integration patterns.
+System structure, constraints, and design rationale.
 
-- [Overview](architecture/overview.md) — {{OVERVIEW_DESCRIPTION}}
-- [Data Model](architecture/data-model.md) — {{DATA_MODEL_DESCRIPTION}}
-- [Cross-Cutting Concerns](architecture/cross-cutting-concerns.md) — {{PATTERNS_DESCRIPTION}}
+{{ARCHITECTURE_LIST}}
 
+<!-- OPTIONAL: Include only when domain documentation exists. -->
 ## Domain
 
-Business terminology and definitions.
+Terminology and domain concepts.
 
-- [Glossary](domain/glossary.md) — {{GLOSSARY_DESCRIPTION}}
+{{DOMAIN_LIST}}
 
-## Stories
+<!-- OPTIONAL: Include only when requirements documentation exists. -->
+## Requirements
 
-Sprint user stories — one per layer/feature.
+Product and system requirements.
 
-{{STORY_LIST}}
+{{REQUIREMENTS_LIST}}
 
-## API
+<!-- OPTIONAL: Include only when stories/ or slices/ was explicitly selected. Use the correct heading and remove the other concept. -->
+## {{WORK_UNIT_HEADING}}
 
-External system integration specs.
+{{WORK_UNIT_DESCRIPTION}}
 
-- [{{API_NAME}}](api/{{API_SLUG}}.md) — Distilled endpoints (read this first)
-- [Full Spec](api/specs/) — Raw spec (~{{SPEC_SIZE}}). **Check size before loading.** If large, ask the user before reading.
+{{WORK_UNIT_LIST}}
 
+<!-- OPTIONAL: Include only when API or integration documentation exists. -->
+## Integrations and APIs
+
+{{INTEGRATION_LIST}}
+
+{{REFERENCE_ACCESS_WARNINGS}}
+
+<!-- OPTIONAL: Include only when guides or operations documentation exists. -->
+## Guides and Operations
+
+{{GUIDE_AND_OPERATIONS_LIST}}
+
+<!-- OPTIONAL: Include only when conventions documentation exists. -->
 ## Conventions
 
-Cross-cutting patterns that all layers must follow.
+Reusable rules that apply across multiple areas.
 
 {{CONVENTION_LIST}}
 
 ## Decisions
 
-Architectural decisions and unresolved questions.
+- [Open Questions](decisions/open-questions.md) — {{OPEN_QUESTIONS_SUMMARY}}
 
-- [Open Questions](decisions/open-questions.md) — {{OQ_COUNT}} known unknowns
+<!-- OPTIONAL: Add content-specific sections here, then remove this comment. -->
+{{ADDITIONAL_SECTIONS}}
