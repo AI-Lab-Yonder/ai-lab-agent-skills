@@ -1,143 +1,177 @@
 ---
 name: pre-merge-review
-description: "Comprehensive pre-merge review pipeline — runs refactor cleanup, code review, Codex review, doc updates, and language-specific review across all branch changes. Use before merging a feature branch."
-version: 1.0.0
+description: "Run a portable, evidence-based review of the changes intended for merge. Use before merging a branch to inspect correctness, security, maintainability, tests, documentation, and review coverage without modifying the changes."
+version: 1.1.0
 level: advanced
 category: code-quality
 ---
 
 # Pre-Merge Review Pipeline
 
-Run this skill before merging a feature branch. It orchestrates multiple review passes across all changes on the branch compared to the base branch, then produces a consolidated findings report.
+Review the exact changes intended for merge, run the checks supported by the repository, and produce one consolidated report. The pipeline is platform-neutral: use the skills, tools, commands, or manual inspection available in the current environment and identify what provided each result.
 
 ## Constraints
 
-- Review scope is **all commits on the current branch** vs the base branch (usually `main`)
-- For Python code, use your project's virtual environment for tooling (e.g., `ruff`, `mypy`, `pytest`)
-- Do NOT auto-fix issues — collect findings and present them at the end
-- Do NOT commit or merge anything — this is a read-only review pipeline
-- If a phase fails or is not applicable (e.g., no Python files changed), skip it and note it in the report
+- Review the complete merge diff against a verified base branch.
+- Detect staged, unstaged, and untracked files; never silently exclude them.
+- Do not edit source files, auto-fix findings, install dependencies, commit, push, or merge.
+- Prefer repository-defined commands and existing environments over invented commands or global tooling.
+- Treat an inapplicable phase, an unavailable capability, and a failed check as different outcomes.
+- Support findings with evidence from the diff, repository, or command output.
+- Do not report `READY FOR MERGE` when required coverage is incomplete.
+- Do not expose secrets or proprietary source excerpts in the report.
 
----
+## Phase 0 — Establish scope
 
-## Phase 0 — Determine Scope
+### Identify the base
 
-1. Identify the base branch. Default to `main` unless the user specifies otherwise.
-2. Run `git diff --name-only <base>...HEAD` to get all changed files on this branch.
-3. Categorize files:
-   - **Python files** (`.py`) → will be reviewed by Python reviewer
-   - **Frontend files** (`.ts`, `.tsx`, `.scss`, `.css`) → will be reviewed by code reviewer
-   - **All files** → refactor cleanup, Codex review, doc updates
-4. Print a short scope summary: branch name, base branch, number of files changed, categories.
+Use the first reliable source:
 
----
+1. A base branch supplied by the user or merge-request context.
+2. The branch's configured upstream or the remote's symbolic default branch.
+3. An existing conventional branch such as `main` or `master`.
 
-## Phase 1 — Refactor & Dead Code Cleanup
+Verify that the selected reference exists and compute its merge base with `HEAD`. If detection remains ambiguous, ask the user instead of choosing silently. Report the selected base and how it was determined.
 
-Invoke `/everything-claude-code:refactor-clean` on the changed files.
+### Inventory changes
 
-Purpose: Identify unused imports, dead code, duplicate logic, and consolidation opportunities.
+Build separate inventories for:
 
-Collect all findings — do not fix yet.
+- committed branch changes from `<base>...HEAD`;
+- staged changes;
+- unstaged changes; and
+- untracked, non-ignored files.
 
----
+The committed merge diff is the default review scope. If local changes exist, explain that they are not part of the committed branch and ask whether they should also be reviewed. Regardless of that choice, disclose them because they can affect local test results.
 
-## Phase 2 — Code Review
+Record renames, deletions, generated files, vendored code, binaries, migrations, configuration, documentation, and tests rather than assuming that every changed file is ordinary source code.
 
-Invoke `/everything-claude-code:code-review` on all changed files.
+### Discover repository guidance
 
-Purpose: Security, quality, best practices, and correctness review.
+Read the repository's contributor or agent guidance and inspect build manifests, lockfiles, task runners, continuous-integration configuration, and test configuration. Use these to determine:
 
-Collect all findings — do not fix yet.
+- languages and frameworks affected by the changes;
+- repository-supported lint, formatting-check, type-check, test, build, and E2E commands;
+- generated or vendored paths that require special handling; and
+- any documented review or merge requirements.
 
----
+Print a scope summary before starting: current branch, base, merge base, included and excluded local changes, changed-file categories, and planned checks.
 
-## Phase 3 — Codex Review
+## Phase 1 — Inspect the diff
 
-Invoke `/codex-review` scoped to the branch changes.
+Review the complete included diff and relevant surrounding code for:
 
-Purpose: Independent AI review for bugs, regressions, performance, and security via Codex MCP.
+- incorrect behavior, regressions, edge cases, and error handling;
+- security, privacy, authorization, validation, and data-loss risks;
+- interface, schema, migration, configuration, and compatibility changes;
+- concurrency, lifecycle, resource, and performance problems;
+- dead code, duplication, unnecessary complexity, and maintainability issues;
+- missing or misleading tests; and
+- documentation that no longer matches behavior.
 
-Collect all findings — do not fix yet.
+Use available review skills or integrations when they fit, but do not require a platform-specific command. If no specialized reviewer is available, perform the inspection directly and record that implementation in the phase results.
 
----
+## Phase 2 — Run repository checks
 
-## Phase 4 — Python Review (conditional)
+Select checks from repository guidance and the affected technologies. Typical categories are:
 
-**Only run if Phase 0 found Python files in the changeset.**
+- formatting verification without auto-fix;
+- linting and static analysis;
+- type checking;
+- focused tests for changed behavior;
+- the broader test suite when proportionate;
+- build or compile verification; and
+- schema or migration validation.
 
-Invoke `/everything-claude-code:python-review` on the changed Python files.
+Use the project's existing environment and dependency state. Do not install missing tools automatically. For every command, record the exact command, exit status, and relevant result.
 
-Use your project's virtual environment for all Python tooling (ruff, mypy, pytest).
+Classify each planned check as:
 
-Collect all findings — do not fix yet.
+- **passed** — ran successfully;
+- **failed** — ran and found a problem or could not complete;
+- **not applicable** — does not relate to the changes;
+- **unavailable** — required tool, environment, service, or credential is missing; or
+- **not run** — deliberately omitted, with the reason.
 
----
+A required check that is `failed`, `unavailable`, or `not run` makes review coverage incomplete unless equivalent evidence is obtained another way.
 
-## Phase 5 — E2E Testing (optional)
+## Phase 3 — Validate affected flows
 
-If the changes touch critical user flows (e.g., authentication, checkout, data export), consider running E2E tests to validate end-to-end.
+Run E2E or integration coverage when the changes affect a user-visible or cross-system flow and the repository provides a safe, configured way to do so. Examples include authentication, authorization, payments, destructive actions, migrations, imports, exports, and communication with external services.
 
-Skip if changes are purely cosmetic, documentation, or test-only.
+Do not run checks that would mutate production data, send real messages, incur charges, or require undisclosed credentials. Mark such coverage as unavailable and state what a reviewer should verify in an appropriate environment.
 
----
+For cosmetic, documentation-only, or isolated test changes, mark E2E as not applicable and explain why.
 
-## Phase 6 — Documentation Updates
+## Phase 4 — Check documentation
 
-Invoke `/everything-claude-code:update-docs` to check if documentation needs updating based on the branch changes.
+Compare behavior and interfaces in the diff with relevant READMEs, guides, API references, examples, changelogs, configuration documentation, and operational instructions.
 
-Purpose: Ensure codemaps, READMEs, and guides reflect the current state.
+Report documentation gaps as findings. Do not update documentation during this read-only pipeline.
 
-Note any docs that need updating — do not auto-update yet.
+## Phase 5 — Optional independent review
 
----
+When a genuinely independent reviewer or review integration is available, run it against the same scope and provide the same base and inclusion rules. This phase is optional; absence alone does not make the review incomplete.
 
-## Phase 7 — Consolidated Report
+Validate imported findings against the actual diff and surrounding code. Do not treat another reviewer's output as established fact.
 
-After all phases complete, produce a single structured report:
+## Phase 6 — Consolidate findings
 
-### Report Format
+Merge overlapping findings that share a root cause. Keep distinct consequences separate only when they require different fixes or have materially different severity.
+
+Each actionable finding must contain:
+
+- a stable ID and severity;
+- file and line or the narrowest available location;
+- the observed behavior or failure mode;
+- evidence and the relevant conditions;
+- impact;
+- a focused remediation proposal; and
+- confidence: high, medium, or low.
+
+Do not inflate severity because a finding came from a specialized tool. Omit speculative concerns that cannot be tied to changed code, or list them separately as questions requiring confirmation.
+
+## Phase 7 — Report
+
+Use this structure:
 
 ```markdown
 # Pre-Merge Review Report
 
-**Branch:** <branch-name>
-**Base:** <base-branch>
+**Branch:** <branch>
+**Base:** <verified base and detection source>
+**Merge base:** <commit>
+**Scope:** <committed diff plus any approved local changes>
 **Files reviewed:** <count>
-**Date:** <today>
 
-## Summary
+## Coverage
+| Phase or check | Implementation or command | Status | Evidence or limitation |
+|---|---|---|---|
 
-| Phase | Status | Findings |
-|-------|--------|----------|
-| Refactor & Cleanup | done/skipped | X issues |
-| Code Review | done/skipped | X issues |
-| Codex Review | done/skipped | X issues |
-| Doc Updates | done/skipped | X items |
-| Python Review | done/skipped/n-a | X issues |
-| E2E Testing | done/skipped/n-a | X failures |
+## Blocking Findings
+- [ID] severity · confidence — file:line — finding, evidence, impact, remediation
 
-## Critical Issues (must fix before merge)
-- [ID] severity — file:line — description
-
-## High Issues (should fix before merge)
-- [ID] severity — file:line — description
-
-## Medium Issues (fix if time permits)
-- [ID] severity — file:line — description
-
-## Low Issues (informational)
-- [ID] severity — file:line — description
+## Non-Blocking Findings
+- [ID] severity · confidence — file:line — finding, evidence, impact, remediation
 
 ## Documentation Gaps
-- List of docs/files that need updating
+- <location and required update>
+
+## Open Questions
+- <unverified assumption or decision needed>
+
+## Excluded Changes and Coverage Limitations
+- <what was not reviewed or could not run, and why>
 
 ## Recommendation
-MERGE / MERGE WITH FIXES / DO NOT MERGE
+DO NOT MERGE / MERGE WITH FIXES / READY FOR MERGE / REVIEW INCOMPLETE
 ```
 
-### Decision Logic
+### Recommendation logic
 
-- **DO NOT MERGE**: Any critical security vulnerabilities or data-loss bugs
-- **MERGE WITH FIXES**: High-severity issues that should be addressed first
-- **MERGE**: Only medium/low issues or no issues found
+- **DO NOT MERGE:** a confirmed critical security, privacy, corruption, or data-loss risk exists.
+- **MERGE WITH FIXES:** confirmed blocking findings must be resolved first.
+- **READY FOR MERGE:** no blocking findings remain and all required coverage passed or has equivalent evidence.
+- **REVIEW INCOMPLETE:** missing, failed, or excluded required coverage prevents a reliable recommendation.
+
+State that `READY FOR MERGE` reflects the reviewed scope and evidence; it is not proof that the change is defect-free.
